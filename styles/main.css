@@ -1,0 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+/* can now reference my font */
+body {
+  font-family: fantasy;
+}
