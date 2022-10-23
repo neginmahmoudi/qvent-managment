@@ -56,7 +56,7 @@ export default function Header() {
             <Link href="/">Home</Link>
             <Link href="/Events">Events</Link>
             <Link href="/login">Login</Link>
-            <Link href="/singup">Sign up</Link>
+            <Link href="/signup">Sign up</Link>
           </nav>
         </div>
       </div>
