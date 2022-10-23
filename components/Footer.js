@@ -10,6 +10,8 @@ const footerStyles = css`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 120px;
+  position: relative;
   bottom: 0;
   width: 100%;
   border-top: 1px solid #6d6d6e;

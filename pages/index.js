@@ -14,6 +14,7 @@ const divStyles = css`
   transform: translate(-50%, -50%);
   font-family: fantasy;
   font-size: 80px;
+  -webkit-text-stroke: 2px black;
   letter-spacing: 6px;
   font-weight: 100;
   color: #fff;
@@ -25,7 +26,8 @@ const imageStyles = css`
 const buttonStyles = css`
   padding: 20px 60px;
   border-radius: 20px;
-  margin-bottom: 80px;
+  border: none;
+  margin-bottom: 120px;
   background: linear-gradient(96deg, #cc3bb5, #5ad7a2, #8ac480, #c6ad56);
   font-size: 35px;
   font-weight: 200;
@@ -44,10 +46,10 @@ export default function Home() {
         <meta name="description" content="landing page of the app" />
       </Head>
       <Image
-        src="/lp.jpeg"
+        src="/ilus3.jpeg"
         alt="landing page image"
-        width="1519.2px"
-        height="603.2px"
+        width="1530.2px"
+        height="600px"
         css={imageStyles}
       />
       <div css={divStyles}>

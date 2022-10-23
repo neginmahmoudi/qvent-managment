@@ -55,8 +55,8 @@ export default function Header() {
           <nav css={navStyles}>
             <Link href="/">Home</Link>
             <Link href="/Events">Events</Link>
-            <Link href="/Login">Login</Link>
-            <Link href="/Sing up">Sign up</Link>
+            <Link href="/login">Login</Link>
+            <Link href="/singup">Sign up</Link>
           </nav>
         </div>
       </div>
