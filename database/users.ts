@@ -4,7 +4,7 @@ export type User = {
   id: number;
   firstName: string;
   password: string;
-  email: number;
+  email: string;
 };
 
 export async function getUser() {

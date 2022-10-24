@@ -2,7 +2,7 @@ import { sql } from './connect';
 
 export type Category = {
   id: number;
-  firstName: string;
+  categoryName: string;
 };
 
 export async function getCategories() {

@@ -2,7 +2,7 @@ import { sql } from './connect';
 
 export type Event = {
   id: number;
-  firstName: string;
+  eventName: string;
   description: string;
   address: string;
   eventDate: Date;
