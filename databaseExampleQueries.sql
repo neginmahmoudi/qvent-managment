@@ -2,13 +2,7 @@
 
 CREATE TABLE categories(
   id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  first_name varchar(30) NOT NULL
-);
- CREATE TABLE users(
-  id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  first_name varchar(30) NOT NULL,
-  password varchar(100) NOT NULL,
-  email varchar(100) NOT NULL
+  category_name varchar(30) NOT NULL
 );
 
 INSERT INTO categories(first_name)
@@ -16,23 +10,22 @@ VALUES
   ('outdoor'),
   ('party'),
   ('performance' ),
-  ('sport');
+  ('sport'),
+  ('socialize');
 
   SELECT * FROM categories;
 
 
+ CREATE TABLE users(
+  id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  user_name varchar(30) NOT NULL UNIQUE,
+  pass_hash varchar(100) NOT NULL UNIQUE,
+);
 
-INSERT INTO users(first_name,password,email)
-VALUES
-  ('nina','123nina','aa@gmail.com'),
-  ('charlotte','345louti','bbb@gmail.com'),
-  ('mattias','567matti','nnn@yahoo.com');
-
-  SELECT * FROM users;
 
 CREATE TABLE events(
   id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  first_name varchar(30) NOT NULL,
+  event_name varchar(30) NOT NULL,
   description varchar(100) NOT NULL,
   address varchar(100) NOT NULL,
   event_date DATE NOT NULL,
@@ -40,25 +33,8 @@ CREATE TABLE events(
   user_id integer REFERENCES users (id)
 );
 
-INSERT INTO events(first_name,description,address,event_date,category_id,user_id)
-VALUES
-  ('charlotte', 'open air concert of the band frau Sommer','Mariahilf','1990-12-12',3,1 ),
-  ('nina', 'art performance','oper','1990-12-12',1,2 ),
-  ('mattias', 'queer yoga','stadt park','1990-12-12',2,3 );
-
-  SELECT * FROM events;
-
-
   CREATE TABLE followers(
   id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   user_id integer REFERENCES users(id),
   event_id integer REFERENCES events(id)
 );
-
-INSERT INTO followers(user_id,event_id)
-VALUES
-  (1,2),
-  (2,1),
-  (3,4);
-
-  SELECT * FROM followers;

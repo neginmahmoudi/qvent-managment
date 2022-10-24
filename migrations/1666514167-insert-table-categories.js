@@ -1,7 +1,7 @@
 const categories = ['outdoor', 'party', 'performance', 'sport'];
 
 exports.up = async (sql) => {
-  await sql`INSERT INTO categories ${sql(categories, 'first_name')}`;
+  await sql`INSERT INTO categories ${sql(categories, 'category_name')}`;
 };
 
 exports.down = async (sql) => {
@@ -10,6 +10,6 @@ exports.down = async (sql) => {
     DELETE FROM
     categories
     WHERE
-    first_name=${category.first_name}`;
+    category_name=${category.category_name}`;
   }
 };
