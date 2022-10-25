@@ -1,7 +1,7 @@
 exports.up = async (sql) => {
   await sql`CREATE TABLE users(
     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    user_name varchar(70) NOT NULL,
+    user_name varchar(70) NOT NULL UNIQUE,
     pass_hash varchar(70) NOT NULL UNIQUE,
     email varchar(90)
   );

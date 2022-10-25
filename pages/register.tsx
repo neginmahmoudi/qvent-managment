@@ -2,6 +2,8 @@ import { css } from '@emotion/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
+import { RegisterResponseBody } from './api/register';
 
 const flexconstyles = css`
   display: flex;
@@ -81,6 +83,25 @@ const buttonStyles = css`
   }
 `;
 export default function SignUp() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  async function registerHandler() {
+    const registerResponse = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username.toLowerCase(),
+        password,
+      }),
+    });
+
+    const registerResponseBody =
+      (await registerResponse.json()) as RegisterResponseBody;
+    console.log(registerResponseBody);
+  }
   return (
     <div css={flexconstyles}>
       <Image
@@ -97,11 +118,35 @@ export default function SignUp() {
 
         <div css={formStyles}>
           <h3> Create Your Account </h3>
-          <input placeholder="Email" />
-          <input placeholder="Username" />
-          <input placeholder="Password" />
+          <input
+            value={email}
+            onChange={(event) => {
+              setEmail(event.currentTarget.value);
+            }}
+            placeholder="Email"
+          />
+          <input
+            value={username}
+            onChange={(event) => {
+              setUsername(event.currentTarget.value.toLowerCase());
+            }}
+            placeholder="Username"
+          />
+          <input
+            value={password}
+            onChange={(event) => {
+              setPassword(event.currentTarget.value);
+            }}
+            placeholder="Password"
+          />
           <div css={buttonStyles}>
-            <button>Sign Up</button>
+            <button
+              onClick={async () => {
+                await registerHandler();
+              }}
+            >
+              Sign Up
+            </button>
             <p>Already a user ?</p>
             <Link href="/login">Login</Link>
           </div>
