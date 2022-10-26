@@ -1,7 +1,9 @@
 import { css } from '@emotion/react';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { RegisterResponseBody } from './api/register';
 
@@ -82,12 +84,19 @@ const buttonStyles = css`
     margin-top: -10px;
   }
 `;
-export default function SignUp() {
+
+// type Props = {
+//   refreshUserProfile: () => Promise<void>;
+// };
+
+export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const [errors, setErrors] = useState<{ message: string }[]>([]);
+  const router = useRouter();
+  // const [email, setEmail] = useState('');
   async function registerHandler() {
-    const registerResponse = await fetch('/api/login', {
+    const registerResponse = await fetch('/api/register', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -100,7 +109,20 @@ export default function SignUp() {
 
     const registerResponseBody =
       (await registerResponse.json()) as RegisterResponseBody;
-    console.log(registerResponseBody);
+    if ('errors' in registerResponseBody) {
+      setErrors(registerResponseBody.errors);
+      return console.log(registerResponseBody.errors);
+    }
+
+    const returnTo = router.query.returnTo;
+    if (
+      returnTo &&
+      !Array.isArray(returnTo) && // Security: Validate returnTo parameter against valid path
+      // (because this is untrusted user input)
+      /^\/[a-zA-Z0-9-?=/]*$/.test(returnTo)
+    ) {
+      return await router.push(returnTo);
+    }
   }
   return (
     <div css={flexconstyles}>
@@ -118,13 +140,27 @@ export default function SignUp() {
 
         <div css={formStyles}>
           <h3> Create Your Account </h3>
-          <input
+          {errors.map((error) => {
+            return (
+              <p
+                css={css`
+                  background-color: red;
+                  color: white;
+                  padding: 5px;
+                `}
+                key={error.message}
+              >
+                ERROR: {error.message}
+              </p>
+            );
+          })}
+          {/* <input
             value={email}
             onChange={(event) => {
               setEmail(event.currentTarget.value);
             }}
             placeholder="Email"
-          />
+          /> */}
           <input
             value={username}
             onChange={(event) => {
@@ -154,4 +190,12 @@ export default function SignUp() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const token = context.req.cookies.sessionToken;
+
+  return {
+    props: {},
+  };
 }
