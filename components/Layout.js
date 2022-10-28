@@ -10,7 +10,7 @@ export default function Layout(props) {
         <meta name="description" content="Queer event managment" />
         <link rel="icon" href="favicon-16.jpeg" />
       </Head>
-      <Header />
+      <Header user={props.user} />
       <main>{props.children}</main>
       <Footer />
     </>

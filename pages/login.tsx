@@ -1,9 +1,11 @@
 import { css } from '@emotion/react';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { getValidSessionByToken } from '../database/sessions';
 import { LoginResponseBody } from './api/login';
 
 const flexconstyles = css`
@@ -44,9 +46,6 @@ const formStyles = css`
     border-bottom: 1px solid black;
     border-radius: 10px;
     background-color: #fff;
-    :hover {
-      transform: scale(0.9);
-    }
   }
 `;
 const buttonStyles = css`
@@ -109,7 +108,6 @@ export default function Login(props: Props) {
     });
 
     const loginResponseBody = (await loginResponse.json()) as LoginResponseBody;
-    console.log(loginResponseBody);
 
     if ('errors' in loginResponseBody) {
       setErrors(loginResponseBody.errors);
@@ -172,7 +170,7 @@ export default function Login(props: Props) {
           <input
             value={username}
             onChange={(event) => {
-              setUsername(event.currentTarget.value);
+              setUsername(event.currentTarget.value.toLowerCase());
             }}
             placeholder="Username"
           />
@@ -199,4 +197,21 @@ export default function Login(props: Props) {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const token = context.req.cookies.sessionToken;
+
+  if (token && (await getValidSessionByToken(token))) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }

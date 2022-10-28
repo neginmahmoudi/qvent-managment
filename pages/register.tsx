@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { getValidSessionByToken } from '../database/sessions';
 import { RegisterResponseBody } from './api/register';
 
 const flexconstyles = css`
@@ -44,10 +45,6 @@ const formStyles = css`
     border: none;
     border-radius: 10px;
     border-bottom: 2px solid black;
-
-    :hover {
-      transform: scale(0.9);
-    }
   }
 `;
 const buttonStyles = css`
@@ -85,11 +82,11 @@ const buttonStyles = css`
   }
 `;
 
-// type Props = {
-//   refreshUserProfile: () => Promise<void>;
-// };
+type Props = {
+  refreshUserProfile: () => Promise<void>;
+};
 
-export default function Register() {
+export default function Register(props: Props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ message: string }[]>([]);
@@ -109,6 +106,7 @@ export default function Register() {
 
     const registerResponseBody =
       (await registerResponse.json()) as RegisterResponseBody;
+
     if ('errors' in registerResponseBody) {
       setErrors(registerResponseBody.errors);
       return console.log(registerResponseBody.errors);
@@ -123,6 +121,10 @@ export default function Register() {
     ) {
       return await router.push(returnTo);
     }
+    // refresh the user on state
+    await props.refreshUserProfile();
+    // redirect user to user profile
+    await router.push(`/private-profile`);
   }
   return (
     <div css={flexconstyles}>
@@ -194,6 +196,15 @@ export default function Register() {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
+
+  if (token && (await getValidSessionByToken(token))) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: true,
+      },
+    };
+  }
 
   return {
     props: {},

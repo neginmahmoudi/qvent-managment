@@ -9,5 +9,6 @@ exports.up = async (sql) => {
 };
 
 exports.down = async (sql) => {
-  await sql`DROP TABLE users`;
+  await sql`DROP TABLE users
+  `;
 };
