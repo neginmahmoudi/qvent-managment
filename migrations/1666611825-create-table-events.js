@@ -7,7 +7,7 @@ exports.up = async (sql) => {
   event_date DATE NOT NULL,
   category_id integer REFERENCES categories(id),
   user_id integer REFERENCES users (id),
-  free boolean
+  is_free boolean
   );`;
 };
 

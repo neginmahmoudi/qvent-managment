@@ -23,15 +23,33 @@ export default function UserProfile(props: Props) {
   return (
     <>
       <Head>
-        <title>Personal Information</title>
+        <title>Your Profile | Qvent</title>
         <meta name="description" content="Biography of the person" />
       </Head>
-      <h1>Personal Information</h1>
-      id: {props.user.id} username: {props.user.username}
+      <h1>welcome back, {props.user.username}!</h1>
+      <p>your attending events</p>
+      <p>to create more events click here !</p>
+      <button>create event</button>
       <hr />
-      THIS IS NOT FUNCTINAL BUT AN EXAMPLE
       <br />
-      <button>Delete User</button>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </>
   );
 }

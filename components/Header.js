@@ -15,7 +15,11 @@ const containerStyles = css`
 const navContainerStyles = css`
   display: flex;
   div {
-    color: #dfd3c3;
+    color: #fff;
+    margin-left: 15px;
+    padding: 5px;
+    background-color: blueviolet;
+    border-radius: 50%;
   }
 `;
 const navStyles = css`
@@ -60,17 +64,9 @@ export default function Header(props) {
           <nav css={navStyles}>
             <Link href="/">Home</Link>
             <Link href="/Events">Events</Link>
-
-            {props.user && props.user.username}
+            <div>{props.user && props.user.username}</div>
             {props.user ? (
-              <Anchor
-                css={css`
-                  margin-left: 10px;
-                `}
-                href="/logout"
-              >
-                Logout
-              </Anchor>
+              <Anchor href="/logout">Logout</Anchor>
             ) : (
               <>
                 <Link href="/login">Login</Link>

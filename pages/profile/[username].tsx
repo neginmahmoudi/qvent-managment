@@ -1,6 +1,25 @@
+import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import { getUserByUsername, User } from '../../database/users';
+
+const containerStyles = css`
+  width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  p {
+    padding: 10px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+  }
+`;
+const imgStyles = css`
+  border-radius: 50%;
+`;
 
 type Props = {
   user?: User;
@@ -23,11 +42,40 @@ export default function UserProfile(props: Props) {
   return (
     <>
       <Head>
-        <title>Personal Information</title>
+        <title>Host's Profile</title>
         <meta name="description" content="Biography of the person" />
       </Head>
-      <h1>Personal Information</h1>
-      id: {props.user.id} username: {props.user.username}
+      <div css={containerStyles}>
+        <h1>Your favorite event's host</h1>
+
+        <div>
+          <Image
+            src="/avatar.jpg"
+            alt="avatar image of user"
+            width="200px"
+            height="200px"
+            css={imgStyles}
+          />
+          <p>username: {props.user.username}</p>
+        </div>
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
     </>
   );
 }
