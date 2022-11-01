@@ -8,6 +8,7 @@ export type Event = {
   eventDate: Date;
   categoryId: number;
   userId: number;
+  isFree: boolean;
 };
 
 export async function getEvent() {
