@@ -30,20 +30,20 @@ export async function createEvent(
   address: string,
   eventDate: Date,
   categoryId: number,
-  useryId: number,
+  userId: number,
   isFree: boolean,
 ) {
   const [event] = await sql<Event[]>`
     INSERT INTO events
-      ( eventName,
+      ( event_name,
        description,
        address,
-       eventDate,
-       categoryId,
-       useryIdr,
-       isFree)
+       event_date,
+       category_id,
+       user_id,
+       free)
     VALUES
-      (${eventName}, ${description}, ${address},${eventDate},${categoryId},${useryId},${isFree})
+      (${eventName}, ${description}, ${address},${eventDate},${categoryId},${userId},${isFree})
     RETURNING *
   `;
   return event;

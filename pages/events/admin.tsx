@@ -1,14 +1,27 @@
+import { GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
+import { Category, getCategories } from '../../database/categories';
 import { Event } from '../../database/events';
 
-export default function Admin() {
+type Props = {
+  categoriesList: Category[];
+};
+export default function Admin(props: Props) {
   const [events, setEvents] = useState<Event[]>([]);
   const [eventNameInput, setEventNameInput] = useState('');
   const [descriptionInput, setDescriptionInput] = useState('');
   const [addressInput, setAddressInput] = useState('');
   const [dateInput, setDateInput] = useState('');
   const [priceInput, setPriceInput] = useState('false');
+  const [categoryIdInput, setCategoryIdInput] = useState(0);
+
+  const [eventNameOnEditInput, seteventNameOnEditInput] = useState('');
+  const [descriptionOnEditInput, setDescriptionOnEditInput] = useState('');
+  const [addressOnEditInput, setAddressOnEditInput] = useState('');
+  const [dateOnEditInput, setDateOnEditInput] = useState('');
+  const [priceOnEditInput, setPriceOnEditInput] = useState(false);
+  const [onEditId, setOnEditId] = useState<number | undefined>();
 
   async function getEventsFromApi() {
     const response = await fetch('/api/events');
@@ -23,15 +36,22 @@ export default function Admin() {
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify({}),
+      body: JSON.stringify({
+        userId: props.user.id,
+        eventName: eventNameInput,
+        description: descriptionInput,
+        address: addressInput,
+        eventDate: dateInput,
+        categoryId: categoryIdInput,
+        isFree: priceInput,
+      }),
     });
     const eventFromApi = (await response.json()) as Event;
 
-    // you can check if animalFromApi contains an error and display the error in the front end
+    // const newState = [...events, eventFromApi];
 
-    const newState = [...events, eventFromApi];
-
-    setEvents(newState);
+    // setEvents(newState);
+    getEventsFromApi();
   }
 
   async function deleteEventFromApiById(id: number) {
@@ -44,7 +64,36 @@ export default function Admin() {
       return event.id !== deletedEvent.id;
     });
 
-    setEvents(filteredEvent);
+    // setEvents(filteredEvent);
+    getEventsFromApi();
+  }
+
+  async function updateEventFromApiById(id: number) {
+    const response = await fetch(`/api/events/${id}`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        eventName: eventNameOnEditInput,
+        description: descriptionOnEditInput,
+        address: addressOnEditInput,
+        eventDate: dateOnEditInput,
+        categoryName: props.categoriesList,
+        isFree: priceOnEditInput,
+      }),
+    });
+    const updatedEventFromApi = (await response.json()) as Event;
+
+    const newState = events.map((event) => {
+      if (event.id === updatedEventFromApi.id) {
+        return updatedEventFromApi;
+      } else {
+        return event;
+      }
+    });
+
+    setEvents(newState);
   }
 
   useEffect(() => {
@@ -56,99 +105,202 @@ export default function Admin() {
   return (
     <>
       <Head>
-        <title>Frontend api</title>
+        <title>Frontend event api</title>
         <meta name="description" content="Content of the api " />
       </Head>
-
-      <h1>Events Form</h1>
-      <label>
-        event Name
-        <input
-          value={eventNameInput}
-          onChange={(event) => {
-            setEventNameInput(event.currentTarget.value);
-          }}
-        />
-      </label>
-      <br />
-      <label>
-        description
+      <div>
+        <h1>Events Form</h1>
+        <label>
+          event Name
+          <input
+            value={eventNameInput}
+            onChange={(event) => {
+              setEventNameInput(event.currentTarget.value);
+            }}
+          />
+        </label>
         <br />
-        <textarea
-          value={descriptionInput}
+        <label>
+          description
+          <br />
+          <textarea
+            value={descriptionInput}
+            onChange={(event) => {
+              setDescriptionInput(event.currentTarget.value);
+            }}
+          />
+        </label>
+        <br />
+        <label>
+          Address
+          <input
+            value={addressInput}
+            onChange={(event) => {
+              setAddressInput(event.currentTarget.value);
+            }}
+          />
+        </label>
+        <br />
+        <label>
+          date
+          <input
+            type="date"
+            value={dateInput}
+            onChange={(event) => {
+              setDateInput(event.currentTarget.value);
+            }}
+          />
+        </label>
+        <label>Choose a Category:</label>
+        <select
+          required={true}
           onChange={(event) => {
-            setDescriptionInput(event.currentTarget.value);
+            console.log(event.currentTarget.value);
+            setCategoryIdInput(event.currentTarget.value);
           }}
-        />
-      </label>
-      <br />
-      <label>
-        Address
-        <input
-          value={addressInput}
-          onChange={(event) => {
-            setAddressInput(event.currentTarget.value);
+        >
+          <option>select one</option>
+          {props.categoriesList?.map((category) => {
+            return (
+              <option value={category.id} key={`categoriesList-${category.id}`}>
+                {category.categoryName}
+              </option>
+            );
+          })}
+        </select>
+        <br />
+        <label>
+          free
+          <input
+            type="checkbox"
+            value={priceInput}
+            onChange={(event) => {
+              setPriceInput(event.currentTarget.value);
+            }}
+          />
+        </label>
+        <br />
+        <button
+          onClick={async () => {
+            await createEventFromApi();
           }}
-        />
-      </label>
-      <br />
-      <label>
-        date
-        <input
-          type="date"
-          value={dateInput}
-          onChange={(event) => {
-            setDateInput(event.currentTarget.value);
-          }}
-        />
-      </label>
-      <label>Choose a Category:</label>
+        >
+          submit
+        </button>
+      </div>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>event Id</th>
+              <th>event name</th>
+              <th>event description</th>
 
-      <select name="categories" id="categories">
-        <option value="volvo">Volvo</option>
-      </select>
+              <th>event address</th>
+              <th>event date</th>
+              <th>event category name</th>
+              <th>event price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {events?.map((event) => {
+              return (
+                <tr key={`eventId-${event.userId}`}>
+                  <td>{event.userId}</td>
+                  <td>{event.eventName}</td>
+                  <td>{event.description}</td>
+                  <td>{event.address}</td>
+                  <td>{event.eventDate}</td>
+                  <td>{event.categoryId}</td>
+                  <td>{event.isFree}</td>
+                  <td>
+                    {' '}
+                    <button>edit</button>
+                    <button>save</button>
+                    <button
+                      onClick={async () =>
+                        await deleteEventFromApiById(event.id)
+                      }
+                    >
+                      {' '}
+                      delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
-      <br />
-      <label>
-        free
-        <input
-          type="checkbox"
-          value={priceInput}
-          onChange={(event) => {
-            setPriceInput(event.currentTarget.value);
-          }}
-        />
-      </label>
-      <br />
-      <button
-        onClick={async () => {
-          await createEventFromApi();
-        }}
-      >
-        submit
-      </button>
+      {/* {events.map((event) => {
+        const isEventOnEdit = onEditId === animal.id;
 
-      {events.map((event) => {
         return (
-          <div key={event.id}>
-            <div>{event.userId}</div>
-            <div>{event.eventName}</div>
-            <div>{event.description}</div>
-            <div>{event.address}</div>
-            <div>{event.eventDate.toString()}</div>
-            <div>{event.categoryId}</div>
-            <div>{event.isFree}</div>
-            <button>edit</button>
-            <button>save</button>
-            <button
-              onClick={async () => await deleteEventFromApiById(event.id)}
-            >
-              {' '}
-              delete
+          <Fragment key={event.id}>
+            <input
+              value={isEventOnEdit ? eventNameOnEditInput : event.eventName}
+              disabled={!isEventOnEdit}
+              onChange={(event) => {
+                setEventNameOnEditInput(event.currentTarget.value);
+              }}
+            />
+            <input
+              value={isEventOnEdit ? descriptionOnEditInput : event.description}
+              disabled={!isAnimalOnEdit}
+              onChange={(event) => {
+                setTypeOnEditInput(event.currentTarget.value);
+              }}
+            />
+            <input
+              value={
+                isAnimalOnEdit ? accessoryOnEditInput : animal.accessory || ''
+              }
+              disabled={!isAnimalOnEdit}
+              onChange={(event) => {
+                setAccessoryOnEditInput(event.currentTarget.value);
+              }}
+            />
+
+            <button onClick={() => deleteAnimalFromApiById(animal.id)}>
+              X
             </button>
-          </div>
+            {!isAnimalOnEdit ? (
+              <button
+                onClick={() => {
+                  setOnEditId(animal.id);
+                  setFirstNameOnEditInput(animal.firstName);
+                  setAccessoryOnEditInput(animal.accessory || '');
+                  setTypeOnEditInput(animal.type);
+                }}
+              >
+                edit
+              </button>
+            ) : (
+              <button
+                onClick={async () => {
+                  setOnEditId(undefined);
+                  await updateAnimalFromApiById(animal.id);
+                }}
+              >
+                save
+              </button>
+            )}
+            <br />
+          </Fragment>
         );
-      })}
+      })} */}
     </>
   );
+}
+
+export async function getServerSideProps(): Promise<
+  GetServerSidePropsResult<Props>
+> {
+  const categoriesList = await getCategories();
+  return {
+    props: {
+      categoriesList: categoriesList,
+    },
+  };
 }

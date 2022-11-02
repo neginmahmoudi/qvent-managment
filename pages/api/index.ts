@@ -5,5 +5,5 @@ export default function handler(
   response: NextApiResponse,
 ) {
   // This is the response for any method on this endpoint
-  response.status(200).json({ animals: 'http://localhost:3000/api/events' });
+  response.status(200).json({ events: 'http://localhost:3000/api/events' });
 }
