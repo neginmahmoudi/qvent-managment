@@ -24,6 +24,28 @@ export async function getEventById(id: number) {
   return event;
 }
 
+// Get a single event by id and valid session token
+export async function getEventByIdAndValidSessionToken(
+  id: number,
+  token: string | undefined,
+) {
+  if (!token) return undefined;
+  const [event] = await sql<Event[]>`
+    SELECT
+      events.*
+    FROM
+      events,
+      sessions
+    WHERE
+      sessions.token = ${token}
+    AND
+      sessions.expiry_timestamp > now()
+    AND
+      events.id = ${id}
+  `;
+  return event;
+}
+
 export async function createEvent(
   eventName: string,
   description: string,

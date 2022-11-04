@@ -34,8 +34,6 @@ const buttonStyles = css`
   font-family: cursive;
   color: #fff;
   :hover {
-    transition-timing-function: ease-out;
-    transition: 1s;
     transform: scale(0.9);
     box-shadow: 5px 10px #918f89;
   }

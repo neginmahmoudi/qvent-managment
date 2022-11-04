@@ -1,10 +1,23 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createEvent, getEvent } from '../../../database/events';
+import { getValidSessionByToken } from '../../../database/sessions';
 
 export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse,
 ) {
+  console.log('session is passed', request.cookies.sessionToken);
+
+  const session =
+    request.cookies.sessionToken &&
+    (await getValidSessionByToken(request.cookies.sessionToken));
+
+  if (!session) {
+    response
+      .status(400)
+      .json({ errors: [{ message: 'No valid session token passed' }] });
+    return;
+  }
   if (request.method === 'GET') {
     const events = await getEvent();
     return response.status(200).json(events);
@@ -19,6 +32,7 @@ export default async function handler(
     const categoryId = request.body?.categoryId;
     const userId = request.body?.userId;
     const isFree = request.body?.isFree;
+
     if (
       !(
         eventName &&
