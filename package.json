@@ -10,6 +10,7 @@
     "migrate": "dotenv ley"
   },
   "dependencies": {
+    "@emotion-icons/bootstrap": "^3.27.0",
     "@emotion-icons/entypo-social": "^3.14.0",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",

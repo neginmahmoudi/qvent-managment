@@ -1,10 +1,11 @@
 import { css } from '@emotion/react';
-import { GetServerSidePropsResult } from 'next';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Category, getCategories } from '../../database/categories';
-import { Event } from '../../database/events';
+import { Event, getEventByLogedInUser } from '../../database/events';
+import { getUserBySessionToken, User } from '../../database/users';
 
 const containerStyles = css`
   display: flex;
@@ -95,6 +96,8 @@ const eventStyles = css`
 
 type Props = {
   categoriesList: Category[];
+  eventsss: Event[];
+  user: User;
 };
 export default function Admin(props: Props) {
   const [events, setEvents] = useState<Event[]>([]);
@@ -114,10 +117,12 @@ export default function Admin(props: Props) {
   // const [onEditId, setOnEditId] = useState<number | undefined>();
 
   async function getEventsFromApi() {
-    const response = await fetch('/api/events');
-    const eventsFromApi = await response.json();
+    // const response = await fetch('/api/events');
+    // const eventsFromApi = await response.json();
+    setEvents(props.eventsss);
+    console.log('show', props.eventsss);
 
-    setEvents(eventsFromApi);
+    // console.log(eventByUser);
   }
 
   async function createEventFromApi() {
@@ -128,7 +133,7 @@ export default function Admin(props: Props) {
       },
       body: JSON.stringify({
         // user id is not correct
-        userId: 1,
+        userId: props.user.id.toString(),
         eventName: eventNameInput,
         description: descriptionInput,
         address: addressInput,
@@ -139,11 +144,8 @@ export default function Admin(props: Props) {
     });
 
     const eventFromApi = (await response.json()) as Event;
-    // console.log('showww', eventFromApi);
-    // const newState = [...events, eventFromApi];
-    // console.log('11111', newState);
-    // setEvents(newState);
-    getEventsFromApi();
+    const newState = [...events, eventFromApi];
+    setEvents(newState);
   }
 
   async function deleteEventFromApiById(id: number) {
@@ -393,14 +395,19 @@ export default function Admin(props: Props) {
   );
 }
 
-export async function getServerSideProps(): Promise<
-  GetServerSidePropsResult<Props>
-> {
+export async function getServerSideProps(
+  context: GetServerSidePropsContext,
+): Promise<GetServerSidePropsResult<Props>> {
+  const token = context.req.cookies.sessionToken;
+  const user = token && (await getUserBySessionToken(token));
+  const eventsBy = user && (await getEventByLogedInUser(user.id));
   const categoriesList = await getCategories();
 
   return {
     props: {
       categoriesList: categoriesList,
+      eventsss: JSON.parse(JSON.stringify(eventsBy)),
+      user: user,
     },
   };
 }

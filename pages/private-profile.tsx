@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import { getUserBySessionToken, User } from '../database/users';
 
 type Props = {
@@ -29,6 +30,7 @@ export default function UserProfile(props: Props) {
       <h1>welcome back, {props.user.username}!</h1>
       <p>your attending events</p>
       <p>to create more events click here !</p>
+      <Link href="/events/admin"> click</Link>
       <button>create event</button>
       <hr />
       <br />

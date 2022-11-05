@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import { GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { Event, getEvent } from '../../database/events';
+import { EventDTO, getEventsWithJoint } from '../../database/events';
 
 const hStyles = css`
   margin-left: 30px;
@@ -62,7 +62,7 @@ const iconStyles = css`
 `;
 
 type Props = {
-  eventsList: Event[];
+  eventsList: EventDTO[];
 };
 export default function EventFromDataBase(props: Props) {
   return (
@@ -89,8 +89,11 @@ export default function EventFromDataBase(props: Props) {
                 <h3>name: {event.eventName}</h3>
 
                 <div>location: {event.address}</div>
-                <div>{event.eventDate}</div>
-                <div>{event.isFree ? '' : 'Free'}</div>
+                <div>host:{event.username}</div>
+
+                <div>{event.free ? 'free' : ''}</div>
+                <div>date:{event.eventDate.toString()}</div>
+                <div>{event.categoryName}</div>
                 <div css={followerStyles}>
                   followers <PersonCircle css={iconStyles} />
                 </div>
@@ -106,7 +109,7 @@ export default function EventFromDataBase(props: Props) {
 export async function getServerSideProps(): Promise<
   GetServerSidePropsResult<Props>
 > {
-  const eventsList = await getEvent();
+  const eventsList = await getEventsWithJoint();
 
   return {
     props: {

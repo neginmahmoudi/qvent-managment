@@ -10,18 +10,56 @@ export type Event = {
   userId: number;
   isFree: boolean;
 };
+export type EventDTO = {
+  id: number;
+  eventName: string;
+  description: string;
+  address: string;
+  eventDate: Date;
+  categoryId: number;
+  categoryName: string;
+  userId: number;
+  username: string;
+  free: boolean;
+};
 
 export async function getEvent() {
   const events = await sql<Event[]>`
-SELECT * FROM events;
+SELECT * FROM events inner join categories on events.category_id=categories.id;
 `;
   return events;
 }
+
+export async function getEventsWithJoint() {
+  const events = await sql<EventDTO[]>`
+SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
+FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id;
+`;
+  return events;
+}
+
+export async function getEventsWithJointByCategoryId(id: number) {
+  const events = await sql<EventDTO[]>`
+SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
+FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
+WHERE events.category_id=${id};
+`;
+  return events;
+}
+
 export async function getEventById(id: number) {
   const [event] = await sql<Event[]>`
   SELECT * FROM events WHERE id=${id}`;
 
   return event;
+}
+
+export async function getEventByLogedInUser(id: number) {
+  const events = await sql<Event[]>`
+
+SELECT * FROM events where user_id=${id};
+`;
+  return events;
 }
 
 // Get a single event by id and valid session token

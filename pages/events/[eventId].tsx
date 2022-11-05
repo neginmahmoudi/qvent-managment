@@ -69,6 +69,7 @@ export default function SingleEvent(props: Props) {
         <div>price </div>
         <div>Available: </div>
       </div>
+      <button onClick={() => {}}>click</button>
     </div>
   );
 }
