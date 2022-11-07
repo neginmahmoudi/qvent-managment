@@ -3,7 +3,7 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Event, getEventById } from '../../database/events';
+import { EventDTO, getFoundEventById } from '../../database/events';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
 const itemsStyles = css`
@@ -17,25 +17,9 @@ const itemsStyles = css`
     width: 200px;
   }
 `;
-const formStyles = css`
-  margin-left: 20px;
-  button {
-    margin-left: 3px;
-    padding: 3px;
-    background-color: #323643;
-    color: #fff;
-    padding: 5px;
-    border-radius: 5px;
-  }
-  input {
-    border-radius: 5px;
-    padding: 5px;
-  }
-`;
-
 type Props =
   | {
-      foundEvent: Event[];
+      foundEventsss: EventDTO;
     }
   | {
       error: string;
@@ -56,7 +40,6 @@ export default function SingleEvent(props: Props) {
   return (
     <div css={itemsStyles}>
       <div>
-        <h1>Name:</h1>
         <Image
           src="/showcart.jpeg"
           alt="logo of the site"
@@ -65,11 +48,17 @@ export default function SingleEvent(props: Props) {
         />
       </div>
 
-      <div css={formStyles}>
-        <div>price </div>
-        <div>Available: </div>
+      <div>
+        <div>
+          <div>host:{props.foundEventsss.username}</div>
+          <div>event name: {props.foundEventsss.eventName}</div>
+          <div>location: {props.foundEventsss.address}</div>
+          <div>{props.foundEventsss.free ? 'free' : ''}</div>
+          <div>{props.foundEventsss.eventDate.toString()}</div>
+          <div>{props.foundEventsss.categoryName}</div>
+          <div>followers</div>
+        </div>
       </div>
-      <button onClick={() => {}}>click</button>
     </div>
   );
 }
@@ -85,16 +74,18 @@ export async function getServerSideProps(
       },
     };
   }
-  const foundEvent = await getEventById(eventId);
-
+  const foundEvent = await getFoundEventById(eventId);
+  console.log('show meeee', foundEvent);
   if (typeof foundEvent === 'undefined') {
     return {
       props: {
-        error: 'no Items found',
+        error: 'no events found',
       },
     };
   }
   return {
-    props: { foundEvent: JSON.parse(JSON.stringify(foundEvent)) },
+    props: {
+      foundEventsss: JSON.parse(JSON.stringify(foundEvent)),
+    },
   };
 }

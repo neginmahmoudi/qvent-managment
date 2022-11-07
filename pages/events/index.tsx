@@ -3,6 +3,7 @@ import { css } from '@emotion/react';
 import { GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { EventDTO, getEventsWithJoint } from '../../database/events';
 
 const hStyles = css`
@@ -86,13 +87,15 @@ export default function EventFromDataBase(props: Props) {
               </div>
 
               <div css={wStyles}>
+                <Link href={`/events/${event.id}`}>click</Link>
+
                 <h3>name: {event.eventName}</h3>
 
                 <div>location: {event.address}</div>
                 <div>host:{event.username}</div>
 
                 <div>{event.free ? 'free' : ''}</div>
-                <div>date:{event.eventDate.toString()}</div>
+                <div>{event.eventDate}</div>
                 <div>{event.categoryName}</div>
                 <div css={followerStyles}>
                   followers <PersonCircle css={iconStyles} />

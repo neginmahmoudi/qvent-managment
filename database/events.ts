@@ -25,19 +25,20 @@ export type EventDTO = {
 
 export async function getEvent() {
   const events = await sql<Event[]>`
-SELECT * FROM events inner join categories on events.category_id=categories.id;
+  SELECT * FROM events inner join categories on events.category_id=categories.id;
 `;
   return events;
 }
 
 export async function getEventsWithJoint() {
   const events = await sql<EventDTO[]>`
-SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
-FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id;
+  SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
+FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
+order by  events.event_date desc;
 `;
   return events;
 }
-
+// for category on the events page
 export async function getEventsWithJointByCategoryId(id: number) {
   const events = await sql<EventDTO[]>`
 SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
@@ -57,7 +58,7 @@ export async function getEventById(id: number) {
 export async function getEventByLogedInUser(id: number) {
   const events = await sql<Event[]>`
 
-SELECT * FROM events where user_id=${id};
+  SELECT * FROM events where user_id=${id};
 `;
   return events;
 }
@@ -80,6 +81,15 @@ export async function getEventByIdAndValidSessionToken(
       sessions.expiry_timestamp > now()
     AND
       events.id = ${id}
+  `;
+  return event;
+}
+// just to try do not push
+export async function getFoundEventById(id: number) {
+  const [event] = await sql<EventDTO[]>`
+    SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
+FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
+WHERE events.id=${id};
   `;
   return event;
 }
@@ -116,9 +126,11 @@ export async function updateEventById(
   address: string,
   eventDate: Date,
   categoryId: number,
-  useryId: number,
   isFree: boolean,
 ) {
+  console.log('editEvent', id);
+  // const strsql = `UPDATE events SET event_name = '${eventName}', description = '${description}', address = '${address}', category_id=${categoryId}, free=${isFree} WHERE id = ${id} RETURNING * `;
+
   const [event] = await sql<Event[]>`
     UPDATE
       events
@@ -126,10 +138,8 @@ export async function updateEventById(
     event_name = ${eventName},
     description = ${description},
     address = ${address},
-    event_date=${eventDate},
     category_id=${categoryId},
-    user_id=${useryId},
-    is_free=${isFree},
+    free=${isFree}
     WHERE
       id = ${id}
     RETURNING *

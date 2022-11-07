@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import { redirect } from 'next/dist/server/api-utils';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -104,48 +105,39 @@ export default function Admin(props: Props) {
   const [eventNameInput, setEventNameInput] = useState('');
   const [descriptionInput, setDescriptionInput] = useState('');
   const [addressInput, setAddressInput] = useState('');
-  const [dateInput, setDateInput] = useState('');
+  const [dateInput, setDateInput] = useState();
   const [priceInput, setPriceInput] = useState(false);
-  const [categoryIdInput, setCategoryIdInput] = useState('');
-
-  // const [eventNameOnEditInput, seteventNameOnEditInput] = useState('');
-  // const [descriptionOnEditInput, setDescriptionOnEditInput] = useState('');
-  // const [addressOnEditInput, setAddressOnEditInput] = useState('');
-  // const [categoryOnEditInput, setCategoryOnEditInput] = useState('');
-  // const [dateOnEditInput, setDateOnEditInput] = useState('');
-  // const [priceOnEditInput, setPriceOnEditInput] = useState(false);
-  // const [onEditId, setOnEditId] = useState<number | undefined>();
+  const [categoryIdInput, setCategoryIdInput] = useState(0);
+  const [onEditId, setOnEditId] = useState<number>(0);
 
   async function getEventsFromApi() {
-    // const response = await fetch('/api/events');
-    // const eventsFromApi = await response.json();
     setEvents(props.eventsss);
-    console.log('show', props.eventsss);
-
-    // console.log(eventByUser);
   }
 
   async function createEventFromApi() {
-    const response = await fetch('/api/events', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        // user id is not correct
-        userId: props.user.id.toString(),
-        eventName: eventNameInput,
-        description: descriptionInput,
-        address: addressInput,
-        eventDate: dateInput,
-        categoryId: categoryIdInput,
-        isFree: priceInput,
-      }),
-    });
+    if (onEditId > 0) {
+      updateEventFromApiById();
+    } else {
+      const response = await fetch('/api/events', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: props.user.id.toString(),
+          eventName: eventNameInput,
+          description: descriptionInput,
+          address: addressInput,
+          eventDate: dateInput,
+          categoryId: categoryIdInput,
+          isFree: priceInput,
+        }),
+      });
 
-    const eventFromApi = (await response.json()) as Event;
-    const newState = [...events, eventFromApi];
-    setEvents(newState);
+      const eventFromApi = (await response.json()) as Event;
+      const newState = [...events, eventFromApi];
+      setEvents(newState);
+    }
   }
 
   async function deleteEventFromApiById(id: number) {
@@ -158,37 +150,58 @@ export default function Admin(props: Props) {
       return event.id !== deletedEvent.id;
     });
 
-    // setEvents(filteredEvent);
-    getEventsFromApi();
+    setEvents(filteredEvent);
   }
 
-  // async function updateEventFromApiById(id: number) {
-  //   const response = await fetch(`/api/events/${id}`, {
-  //     method: 'PUT',
-  //     headers: {
-  //       'content-type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       eventName: eventNameOnEditInput,
-  //       description: descriptionOnEditInput,
-  //       address: addressOnEditInput,
-  //       eventDate: dateOnEditInput,
-  //       categoryName: props.categoriesList,
-  //       isFree: priceOnEditInput,
-  //     }),
-  //   });
-  //   const updatedEventFromApi = (await response.json()) as Event;
+  async function updateEventFromApiById() {
+    const id = onEditId;
+    const response = await fetch(`/api/events/${id}`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        eventId: onEditId.toString(),
+        eventName: eventNameInput,
+        description: descriptionInput,
+        address: addressInput,
+        eventDate: dateInput,
+        categoryId: categoryIdInput,
+        isFree: priceInput,
+      }),
+    });
+    const updatedEventFromApi = (await response.json()) as Event;
 
-  //   const newState = events.map((event) => {
-  //     if (event.id === updatedEventFromApi.id) {
-  //       return updatedEventFromApi;
-  //     } else {
-  //       return event;
-  //     }
-  //   });
-
-  //   setEvents(newState);
-  // }
+    const newState = events.map((event) => {
+      if (event.id === updatedEventFromApi.id) {
+        return updatedEventFromApi;
+      } else {
+        return event;
+      }
+    });
+    setOnEditId(0);
+    setAddressInput('');
+    setEventNameInput('');
+    setDescriptionInput('');
+    setDateInput('');
+    setCategoryIdInput(0);
+    setPriceInput(false);
+    setEvents(newState);
+  }
+  async function edit(id: number) {
+    const e = events.find((e) => e.id === id);
+    if (e) {
+      setAddressInput(e.address);
+      setEventNameInput(e.eventName);
+      setDescriptionInput(e.description);
+      setDateInput(e.eventDate);
+      setCategoryIdInput(e.categoryId);
+      setPriceInput(e.isFree);
+      setOnEditId(e.id);
+    } else {
+      alert('event not foundS id: ' + id);
+    }
+  }
 
   useEffect(() => {
     getEventsFromApi().catch((err) => {
@@ -295,15 +308,16 @@ export default function Admin(props: Props) {
         {events?.map((event) => {
           return (
             <div css={eventStyles} key={`eventId-${event.userId}`}>
-              {/* <td>{event.userId}</td> */}
               <div>EVENT: {event.eventName} </div>
-              {/* <td>{event.description}</td> */}
-              {/* <td>{event.address}</td>
-                  <td>{event.eventDate}</td> */}
-              {/* <td>{event.categoryId}</td>
-                  <td>{event.isFree ? 'no' : 'yes'}</td> */}
               <div>
                 <Link href="/private-profile"> more</Link>
+                <button
+                  onClick={() => {
+                    edit(event.id);
+                  }}
+                >
+                  edit
+                </button>
                 <button
                   onClick={async () => await deleteEventFromApiById(event.id)}
                 >
@@ -320,7 +334,7 @@ export default function Admin(props: Props) {
         const isEventOnEdit = onEditId === event.id;
 
         return (
-          <Fragment key={event.id}>
+          <div key={event.id}>
             <input
               value={isEventOnEdit ? eventNameOnEditInput : event.eventName}
               disabled={!isEventOnEdit}
@@ -343,13 +357,18 @@ export default function Admin(props: Props) {
               }}
             />
             <input
-              value={isEventOnEdit ? dateOnEditInput : event.eventDate}
+              type="date"
+              defaultValue={
+                isEventOnEdit
+                  ? dateOnEditInput
+                  : event.eventDate.toLocaleDateString('en-CA')
+              }
               disabled={!isEventOnEdit}
               onChange={(event) => {
                 setDateOnEditInput(event.currentTarget.value);
               }}
             />
-            <input
+            <select
               value={isEventOnEdit ? categoryOnEditInput : event.categoryId}
               disabled={!isEventOnEdit}
               onChange={(event) => {
@@ -388,7 +407,7 @@ export default function Admin(props: Props) {
               </button>
             )}
             <br />
-          </Fragment>
+          </div>
         );
       })} */}
     </>
@@ -400,13 +419,21 @@ export async function getServerSideProps(
 ): Promise<GetServerSidePropsResult<Props>> {
   const token = context.req.cookies.sessionToken;
   const user = token && (await getUserBySessionToken(token));
-  const eventsBy = user && (await getEventByLogedInUser(user.id));
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: true,
+      },
+    };
+  }
+  const eventsByLogedInUser = user && (await getEventByLogedInUser(user.id));
   const categoriesList = await getCategories();
 
   return {
     props: {
       categoriesList: categoriesList,
-      eventsss: JSON.parse(JSON.stringify(eventsBy)),
+      eventsss: JSON.parse(JSON.stringify(eventsByLogedInUser)),
       user: user,
     },
   };

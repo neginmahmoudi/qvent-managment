@@ -1,3 +1,4 @@
+import { Exit } from '@emotion-icons/ionicons-outline';
 import { css } from '@emotion/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -52,14 +53,14 @@ export default function Header(props) {
   return (
     <header>
       <div css={containerStyles}>
-        <div>
+        <Link href="/">
           <Image
             src="/Qvent.jpg"
             alt="logo of the site"
             width="80px"
             height="80px"
           />
-        </div>
+        </Link>
         <div css={navContainerStyles}>
           <nav css={navStyles}>
             <Link href="/">Home</Link>

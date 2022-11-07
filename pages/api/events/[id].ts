@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
   deleteEventById,
-  getEventById,
   getEventByIdAndValidSessionToken,
   updateEventById,
 } from '../../../database/events';
@@ -21,10 +20,13 @@ export default async function handler(
       .json({ errors: [{ message: 'No valid session token passed' }] });
     return;
   }
-  const eventId = Number(request.query.eventId);
+
+  const eventId = Number(request.query.id);
+  console.log('!!!!!!!!!!!!!!!!!!!', eventId);
   if (!eventId) {
     return response.status(404).json({ message: 'Not a valid id' });
   }
+
   if (request.method === 'GET') {
     const event = await getEventByIdAndValidSessionToken(
       eventId,
@@ -47,7 +49,7 @@ export default async function handler(
     const address = request.body?.address;
     const eventDate = request.body?.eventDate;
     const categoryId = request.body?.categoryId;
-    const useryId = request.body?.useryId;
+    const eventId = request.body?.eventId;
     const isFree = request.body?.isFree;
 
     // Check all the information to create events
@@ -58,7 +60,7 @@ export default async function handler(
         address &&
         eventDate &&
         categoryId &&
-        useryId &&
+        eventId &&
         isFree
       )
     ) {
@@ -66,6 +68,7 @@ export default async function handler(
     }
 
     // Create the eventusing the database util function
+
     const newEvent = await updateEventById(
       eventId,
       eventName,
@@ -73,7 +76,6 @@ export default async function handler(
       address,
       eventDate,
       categoryId,
-      useryId,
       isFree,
     );
 

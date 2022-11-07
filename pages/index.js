@@ -54,7 +54,9 @@ export default function Home() {
       />
       <div css={divStyles}>
         <p> welcome to Qvent ! click to see the Events</p>
-        <button css={buttonStyles}>Click!</button>
+        <button onClick={() => (location.href = '/events')} css={buttonStyles}>
+          Click!
+        </button>
       </div>
     </div>
   );

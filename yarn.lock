@@ -1069,6 +1069,14 @@
     "@babel/runtime" "^7.14.0"
     "@emotion-icons/emotion-icon" "4.1.0"
 
+"@emotion-icons/ionicons-outline@^3.14.0":
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/@emotion-icons/ionicons-outline/-/ionicons-outline-3.14.0.tgz#0660276938904f7f2bd732a4452b048e848836ec"
+  integrity sha512-mo+S9iyLFPxGccaJD557PtgexaH+LisP5qdvsWqFS8+n6narXEWGDh7v0SN8B5kM6Zm7ewg0ZQXoAQ2bL6VsPg==
+  dependencies:
+    "@babel/runtime" "^7.14.0"
+    "@emotion-icons/emotion-icon" "4.1.0"
+
 "@emotion/babel-plugin@^11.10.0":
   version "11.10.2"
   resolved "https://registry.yarnpkg.com/@emotion/babel-plugin/-/babel-plugin-11.10.2.tgz#879db80ba622b3f6076917a1e6f648b1c7d008c7"
