@@ -10,13 +10,40 @@ const itemsStyles = css`
   margin: 0 auto;
   padding: 80px;
   display: flex;
+  background-color: #daf3f1;
   align-items: center;
+
   width: 100%;
-  button {
-    margin-top: 5px;
-    width: 200px;
+  img {
+    border-radius: 10px;
   }
 `;
+const divStyles = css`
+  margin-left: 50px;
+  background-color: #dae5c0;
+  width: 300px;
+
+  border-radius: 10px;
+  padding: 20px;
+  line-height: 30px;
+  display: flex;
+  flex-direction: column;
+  font-family: monospace;
+  font-weight: 800;
+  button {
+    margin-left: 25px;
+    width: 200px;
+    border: none;
+    background-color: green;
+    padding: 10px;
+    font-family: monospace;
+    border-radius: 10px;
+    color: white;
+    font-size: larger;
+    margin-top: 20px;
+  }
+`;
+
 type Props =
   | {
       foundEventsss: EventDTO;
@@ -43,20 +70,23 @@ export default function SingleEvent(props: Props) {
         <Image
           src="/showcart.jpeg"
           alt="logo of the site"
-          width="100px"
-          height="100px"
+          width="300px"
+          height="300px"
         />
       </div>
 
-      <div>
+      <div css={divStyles}>
         <div>
-          <div>host:{props.foundEventsss.username}</div>
-          <div>event name: {props.foundEventsss.eventName}</div>
+          <div>Host:{props.foundEventsss.username}</div>
+          <div>Event Name: {props.foundEventsss.eventName}</div>
           <div>location: {props.foundEventsss.address}</div>
           <div>{props.foundEventsss.free ? 'free' : ''}</div>
-          <div>{props.foundEventsss.eventDate.toString()}</div>
-          <div>{props.foundEventsss.categoryName}</div>
+          <div>Date: {props.foundEventsss.eventDate.toString()}</div>
+          <div> Category: {props.foundEventsss.categoryName}</div>
           <div>followers</div>
+        </div>
+        <div>
+          <button>+ Follow</button>
         </div>
       </div>
     </div>
@@ -75,7 +105,6 @@ export async function getServerSideProps(
     };
   }
   const foundEvent = await getFoundEventById(eventId);
-  console.log('show meeee', foundEvent);
   if (typeof foundEvent === 'undefined') {
     return {
       props: {

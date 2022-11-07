@@ -307,7 +307,7 @@ export default function Admin(props: Props) {
       <div>
         {events?.map((event) => {
           return (
-            <div css={eventStyles} key={`eventId-${event.userId}`}>
+            <div css={eventStyles} key={`eventId-${event.id}`}>
               <div>EVENT: {event.eventName} </div>
               <div>
                 <Link href="/private-profile"> more</Link>
@@ -319,7 +319,12 @@ export default function Admin(props: Props) {
                   edit
                 </button>
                 <button
-                  onClick={async () => await deleteEventFromApiById(event.id)}
+                  onClick={async () => {
+                    const result = confirm('Want to delete?');
+                    if (result) {
+                      await deleteEventFromApiById(event.id);
+                    }
+                  }}
                 >
                   {' '}
                   remove
@@ -422,8 +427,8 @@ export async function getServerSideProps(
   if (!user) {
     return {
       redirect: {
-        destination: '/login',
-        permanent: true,
+        destination: '/login?returnTo=/private-profile',
+        permanent: false,
       },
     };
   }

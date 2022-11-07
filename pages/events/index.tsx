@@ -3,7 +3,6 @@ import { css } from '@emotion/react';
 import { GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
 import { EventDTO, getEventsWithJoint } from '../../database/events';
 
 const hStyles = css`
@@ -14,6 +13,10 @@ const wrapstyles = css`
   justify-content: flex-start;
   flex-wrap: wrap;
   font-family: cursive;
+`;
+const hoverStyles = css`
+  margin-left: 60px;
+  font-family: monospace;
 `;
 const containerStyles = css`
   border-radius: 10px;
@@ -26,6 +29,10 @@ const containerStyles = css`
   width: 300px;
   margin: 2rem;
   margin-top: 55px;
+  a {
+    text-decoration: none;
+    color: black;
+  }
   :hover {
     cursor: pointer;
     box-shadow: 4px -4px #aeccc6;
@@ -73,34 +80,33 @@ export default function EventFromDataBase(props: Props) {
         <meta name="description" content="List of events in qvent app" />
       </Head>
       <h1 css={hStyles}>all events</h1>
+      <p css={hoverStyles}>To find out more click on your favorite event !</p>
       <div css={wrapstyles}>
         {props.eventsList?.map((event) => {
           return (
             <div key={`events-${event.id}`} css={containerStyles}>
-              <div css={imgStyles}>
-                <Image
-                  src="/showcart.jpeg"
-                  alt="logo of the site"
-                  width="240px"
-                  height="200px"
-                />
-              </div>
-
-              <div css={wStyles}>
-                <Link href={`/events/${event.id}`}>click</Link>
-
-                <h3>name: {event.eventName}</h3>
-
-                <div>location: {event.address}</div>
-                <div>host:{event.username}</div>
-
-                <div>{event.free ? 'free' : ''}</div>
-                <div>{event.eventDate}</div>
-                <div>{event.categoryName}</div>
-                <div css={followerStyles}>
-                  followers <PersonCircle css={iconStyles} />
+              <a href={`events/${event.id}`}>
+                <div css={imgStyles}>
+                  <Image
+                    src="/showcart.jpeg"
+                    alt="logo of the site"
+                    width="240px"
+                    height="200px"
+                  />
                 </div>
-              </div>
+
+                <div css={wStyles}>
+                  <h3>name: {event.eventName}</h3>
+                  <div>location: {event.address}</div>
+                  <div>host:{event.username}</div>
+                  <div>{event.free ? 'free' : ''}</div>
+                  <div>{event.eventDate}</div>
+                  <div>{event.categoryName}</div>
+                  <div css={followerStyles}>
+                    followers <PersonCircle css={iconStyles} />
+                  </div>
+                </div>
+              </a>
             </div>
           );
         })}
