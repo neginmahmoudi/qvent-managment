@@ -55,12 +55,12 @@ export default async function handler(
     // Check all the information to create events
     if (
       !(
-        eventName &&
-        description &&
-        address &&
-        eventDate &&
-        categoryId &&
-        eventId &&
+        eventName ||
+        description ||
+        address ||
+        eventDate ||
+        categoryId ||
+        eventId ||
         isFree
       )
     ) {

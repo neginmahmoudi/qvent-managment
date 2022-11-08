@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import { redirect } from 'next/dist/server/api-utils';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -8,6 +7,9 @@ import { Category, getCategories } from '../../database/categories';
 import { Event, getEventByLogedInUser } from '../../database/events';
 import { getUserBySessionToken, User } from '../../database/users';
 
+const flexStyles = css`
+  display: flex;
+`;
 const containerStyles = css`
   display: flex;
   margin: 0 auto;
@@ -66,7 +68,7 @@ const eventStyles = css`
   align-items: center;
   margin: 0 auto;
   margin-bottom: 30px;
-  width: 800px;
+  width: 600px;
   background-color: aliceblue;
   height: 60px;
   border-radius: 25px;
@@ -94,12 +96,21 @@ const eventStyles = css`
     margin-left: 30px;
   }
 `;
+const mapStyles = css`
+  margin-top: 100px;
+  margin-right: 100px;
+`;
+type UserHier = {
+  id: number;
+  username: string;
+};
 
 type Props = {
   categoriesList: Category[];
   eventsss: Event[];
-  user: User;
+  user: UserHier;
 };
+
 export default function Admin(props: Props) {
   const [events, setEvents] = useState<Event[]>([]);
   const [eventNameInput, setEventNameInput] = useState('');
@@ -199,7 +210,7 @@ export default function Admin(props: Props) {
       setPriceInput(e.isFree);
       setOnEditId(e.id);
     } else {
-      alert('event not foundS id: ' + id);
+      alert('event not found id: ' + id);
     }
   }
 
@@ -215,126 +226,127 @@ export default function Admin(props: Props) {
         <title>Frontend event api</title>
         <meta name="description" content="Content of the api " />
       </Head>
-      <div css={containerStyles}>
-        <h1>Events Form</h1>
+      <div css={flexStyles}>
+        <div css={containerStyles}>
+          <h1>Events Form</h1>
 
-        <input
-          placeholder="Event Name"
-          value={eventNameInput}
-          onChange={(event) => {
-            setEventNameInput(event.currentTarget.value);
-          }}
-        />
-
-        <br />
-
-        <br />
-        <textarea
-          placeholder="Description"
-          value={descriptionInput}
-          onChange={(event) => {
-            setDescriptionInput(event.currentTarget.value);
-          }}
-        />
-
-        <br />
-
-        <input
-          placeholder="Location"
-          value={addressInput}
-          onChange={(event) => {
-            setAddressInput(event.currentTarget.value);
-          }}
-        />
-
-        <br />
-        <div>
-          {' '}
           <input
-            type="date"
-            value={dateInput}
+            placeholder="Event Name"
+            value={eventNameInput}
             onChange={(event) => {
-              setDateInput(event.currentTarget.value);
+              setEventNameInput(event.currentTarget.value);
             }}
           />
-          <label> Category:</label>
-          <select
-            required={true}
-            onChange={(event) => {
-              setCategoryIdInput(event.currentTarget.value);
-            }}
-          >
-            <option>select one</option>
-            {props.categoriesList?.map((category) => {
-              return (
-                <option
-                  value={category.id}
-                  key={`categoriesList-${category.id}`}
-                >
-                  {category.categoryName}
-                </option>
-              );
-            })}
-          </select>
-        </div>
 
-        <br />
-        <label>
-          free
-          <input
-            type="checkbox"
-            value={priceInput}
+          <br />
+
+          <br />
+          <textarea
+            placeholder="Description"
+            value={descriptionInput}
             onChange={(event) => {
-              setPriceInput(Boolean(event.currentTarget.value));
+              setDescriptionInput(event.currentTarget.value);
             }}
           />
-        </label>
-        <br />
-        <div>
-          {' '}
-          <button
-            onClick={async () => {
-              await createEventFromApi();
-            }}
-          >
-            submit
-          </button>
-          <Link href="/profile">back</Link>
-        </div>
 
-        <hr />
-      </div>
-      <div>
-        {events?.map((event) => {
-          return (
-            <div css={eventStyles} key={`eventId-${event.id}`}>
-              <div>EVENT: {event.eventName} </div>
-              <div>
-                <Link href="/private-profile"> more</Link>
-                <button
-                  onClick={() => {
-                    edit(event.id);
-                  }}
-                >
-                  edit
-                </button>
-                <button
-                  onClick={async () => {
-                    const result = confirm('Want to delete?');
-                    if (result) {
-                      await deleteEventFromApiById(event.id);
-                    }
-                  }}
-                >
-                  {' '}
-                  remove
-                </button>
+          <br />
+
+          <input
+            placeholder="Location"
+            value={addressInput}
+            onChange={(event) => {
+              setAddressInput(event.currentTarget.value);
+            }}
+          />
+
+          <br />
+          <div>
+            {' '}
+            <input
+              type="date"
+              value={dateInput}
+              onChange={(event) => {
+                setDateInput(event.currentTarget.value);
+              }}
+            />
+            <label> Category:</label>
+            <select
+              required={true}
+              onChange={(event) => {
+                setCategoryIdInput(event.currentTarget.value);
+              }}
+            >
+              <option>select one</option>
+              {props.categoriesList?.map((category) => {
+                return (
+                  <option
+                    value={category.id}
+                    key={`categoriesList-${category.id}`}
+                  >
+                    {category.categoryName}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
+          <br />
+          <label>
+            free
+            <input
+              type="checkbox"
+              value={priceInput}
+              onChange={(event) => {
+                setPriceInput(Boolean(event.currentTarget.value));
+              }}
+            />
+          </label>
+          <br />
+          <div>
+            {' '}
+            <button
+              onClick={async () => {
+                await createEventFromApi();
+              }}
+            >
+              submit
+            </button>
+            <Link href="/profile">back</Link>
+          </div>
+
+          <hr />
+        </div>
+        <div css={mapStyles}>
+          {events?.map((event) => {
+            return (
+              <div css={eventStyles} key={`eventId-${event.id}`}>
+                <div>EVENT: {event.eventName} </div>
+                <div>
+                  <Link href="/private-profile"> more</Link>
+                  <button
+                    onClick={() => {
+                      edit(event.id);
+                    }}
+                  >
+                    edit
+                  </button>
+                  <button
+                    onClick={async () => {
+                      const result = confirm('Want to delete?');
+                      if (result) {
+                        await deleteEventFromApiById(event.id);
+                      }
+                    }}
+                  >
+                    {' '}
+                    remove
+                  </button>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-
       {/* {events.map((event) => {
         const isEventOnEdit = onEditId === event.id;
 

@@ -128,7 +128,7 @@ export async function updateEventById(
   categoryId: number,
   isFree: boolean,
 ) {
-  console.log('editEvent', id);
+  console.log('editedEvent', id);
   // const strsql = `UPDATE events SET event_name = '${eventName}', description = '${description}', address = '${address}', category_id=${categoryId}, free=${isFree} WHERE id = ${id} RETURNING * `;
 
   const [event] = await sql<Event[]>`
@@ -139,6 +139,7 @@ export async function updateEventById(
     description = ${description},
     address = ${address},
     category_id=${categoryId},
+    event_date=${eventDate},
     free=${isFree}
     WHERE
       id = ${id}
