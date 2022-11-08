@@ -5,7 +5,7 @@ export type Event = {
   eventName: string;
   description: string;
   address: string;
-  eventDate: Date;
+  eventDate: String;
   categoryId: number;
   userId: number;
   isFree: boolean;
@@ -15,7 +15,7 @@ export type EventDTO = {
   eventName: string;
   description: string;
   address: string;
-  eventDate: Date;
+  eventDate: string;
   categoryId: number;
   categoryName: string;
   userId: number;

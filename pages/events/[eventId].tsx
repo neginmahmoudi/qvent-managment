@@ -81,7 +81,7 @@ export default function SingleEvent(props: Props) {
           <div>Event Name: {props.foundEventsss.eventName}</div>
           <div>location: {props.foundEventsss.address}</div>
           <div>{props.foundEventsss.free ? 'free' : ''}</div>
-          <div>Date: {props.foundEventsss.eventDate.toString()}</div>
+          <div>Date: {props.foundEventsss.eventDate.split('T')[0]}</div>
           <div> Category: {props.foundEventsss.categoryName}</div>
           <div>followers</div>
         </div>

@@ -116,10 +116,12 @@ export default function Admin(props: Props) {
   const [eventNameInput, setEventNameInput] = useState('');
   const [descriptionInput, setDescriptionInput] = useState('');
   const [addressInput, setAddressInput] = useState('');
-  const [dateInput, setDateInput] = useState();
+  const [dateInput, setDateInput] = useState<string>();
   const [priceInput, setPriceInput] = useState(false);
   const [categoryIdInput, setCategoryIdInput] = useState(0);
   const [onEditId, setOnEditId] = useState<number>(0);
+
+  console.log(dateInput);
 
   async function getEventsFromApi() {
     setEvents(props.eventsss);
@@ -205,7 +207,7 @@ export default function Admin(props: Props) {
       setAddressInput(e.address);
       setEventNameInput(e.eventName);
       setDescriptionInput(e.description);
-      setDateInput(e.eventDate);
+      setDateInput(e.eventDate.split('T')[0]);
       setCategoryIdInput(e.categoryId);
       setPriceInput(e.isFree);
       setOnEditId(e.id);

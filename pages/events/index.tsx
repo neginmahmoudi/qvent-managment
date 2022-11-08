@@ -100,7 +100,7 @@ export default function EventFromDataBase(props: Props) {
                   <div>location: {event.address}</div>
                   <div>host:{event.username}</div>
                   <div>{event.free ? 'free' : ''}</div>
-                  <div>{event.eventDate}</div>
+                  <div>{event.eventDate.split('T')[0]}</div>
                   <div>{event.categoryName}</div>
                   <div css={followerStyles}>
                     followers <PersonCircle css={iconStyles} />
