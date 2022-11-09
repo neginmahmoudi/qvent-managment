@@ -76,7 +76,6 @@ type Props = {
   categoryList: Category[];
 };
 export default function EventFromDataBase(props: Props) {
-  const [allEvents, setAllEvents] = useState<EventDTO[]>(props.filteredEvents);
   const [categoryFilter, setCategoryFilter] = useState(0);
   const [filteredEvents, setFilteredEvents] = useState(props.filteredEvents);
   return (
@@ -85,38 +84,15 @@ export default function EventFromDataBase(props: Props) {
         <title>list of events</title>
         <meta name="description" content="List of events in qvent app" />
       </Head>
-      {/* <input
-        placeholder="search"
-        onChange={(e) => {
-          if (filteredEvents.length <= 0) {
-            setFilteredEvents(events);
-          }
-
-          if (e.currentTarget.value.length <= 0) {
-            setEvents(filteredEvents);
-          } else {
-            const filteredEvent = events.filter((event) => {
-              return event.categoryName.includes(e.currentTarget.value);
-            });
-
-            setEvents(filteredEvent);
-          }
-        }}
-      /> */}
       <select
         required={true}
         value={categoryFilter}
         onChange={(e) => {
           setCategoryFilter(Number(e.currentTarget.value));
-          setFilteredEvents(props.filteredEvents);
-          console.log(filteredEvents);
-
-          if (e.currentTarget.value !== 0) {
-            alert(e.currentTarget.value);
-            const filteredEvent = filteredEvents.filter((event) => {
+          if (Number(e.currentTarget.value) !== 0) {
+            const filteredEvent = props.filteredEvents.filter((event) => {
               return event.categoryId === Number(e.currentTarget.value);
             });
-
             setFilteredEvents(filteredEvent);
           }
         }}
