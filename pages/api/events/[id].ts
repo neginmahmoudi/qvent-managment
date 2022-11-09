@@ -50,7 +50,7 @@ export default async function handler(
     const eventDate = request.body?.eventDate;
     const categoryId = request.body?.categoryId;
     const eventId = request.body?.eventId;
-    const isFree = request.body?.isFree;
+    const free = request.body?.free;
 
     // Check all the information to create events
     if (
@@ -61,7 +61,7 @@ export default async function handler(
         eventDate ||
         categoryId ||
         eventId ||
-        isFree
+        free
       )
     ) {
       return response.status(400).json({ message: 'property is missing' });
@@ -76,7 +76,7 @@ export default async function handler(
       address,
       eventDate,
       categoryId,
-      isFree,
+      free,
     );
 
     if (!newEvent) {

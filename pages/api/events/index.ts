@@ -31,8 +31,8 @@ export default async function handler(
     const eventDate = request.body?.eventDate;
     const categoryId = request.body?.categoryId;
     const userId = request.body?.userId;
-    const isFree = request.body?.isFree;
-    console.log('isfree', isFree);
+    const free = request.body?.free;
+    console.log('free', free);
     if (
       !(
         eventName &&
@@ -56,7 +56,7 @@ export default async function handler(
       eventDate,
       categoryId,
       userId,
-      isFree,
+      free,
     );
     console.log(newEvent);
     return response.status(200).json(newEvent);

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Category, getCategories } from '../../database/categories';
 import { Event, getEventByLogedInUser } from '../../database/events';
-import { getUserBySessionToken, User } from '../../database/users';
+import { getUserBySessionToken } from '../../database/users';
 
 const flexStyles = css`
   display: flex;
@@ -120,9 +120,7 @@ export default function Admin(props: Props) {
   const [priceInput, setPriceInput] = useState(false);
   const [categoryIdInput, setCategoryIdInput] = useState(0);
   const [onEditId, setOnEditId] = useState<number>(0);
-
-  console.log(dateInput);
-
+  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   async function getEventsFromApi() {
     setEvents(props.eventsss);
   }
@@ -143,13 +141,15 @@ export default function Admin(props: Props) {
           address: addressInput,
           eventDate: dateInput,
           categoryId: categoryIdInput,
-          isFree: priceInput,
+          free: priceInput,
         }),
       });
 
       const eventFromApi = (await response.json()) as Event;
       const newState = [...events, eventFromApi];
+
       setEvents(newState);
+      clearStatus();
     }
   }
 
@@ -180,7 +180,7 @@ export default function Admin(props: Props) {
         address: addressInput,
         eventDate: dateInput,
         categoryId: categoryIdInput,
-        isFree: priceInput,
+        free: priceInput,
       }),
     });
     const updatedEventFromApi = (await response.json()) as Event;
@@ -192,13 +192,7 @@ export default function Admin(props: Props) {
         return event;
       }
     });
-    setOnEditId(0);
-    setAddressInput('');
-    setEventNameInput('');
-    setDescriptionInput('');
-    setDateInput('');
-    setCategoryIdInput(0);
-    setPriceInput(false);
+    clearStatus();
     setEvents(newState);
   }
   async function edit(id: number) {
@@ -209,11 +203,20 @@ export default function Admin(props: Props) {
       setDescriptionInput(e.description);
       setDateInput(e.eventDate.split('T')[0]);
       setCategoryIdInput(e.categoryId);
-      setPriceInput(e.isFree);
+      setPriceInput(e.free);
       setOnEditId(e.id);
     } else {
       alert('event not found id: ' + id);
     }
+  }
+  function clearStatus() {
+    setOnEditId(0);
+    setAddressInput('');
+    setEventNameInput('');
+    setDescriptionInput('');
+    setDateInput('');
+    setCategoryIdInput(0);
+    setPriceInput(false);
   }
 
   useEffect(() => {
@@ -274,8 +277,9 @@ export default function Admin(props: Props) {
             <label> Category:</label>
             <select
               required={true}
+              value={categoryIdInput}
               onChange={(event) => {
-                setCategoryIdInput(event.currentTarget.value);
+                setCategoryIdInput(Number(event.currentTarget.value));
               }}
             >
               <option>select one</option>
@@ -297,9 +301,9 @@ export default function Admin(props: Props) {
             free
             <input
               type="checkbox"
-              value={priceInput}
+              checked={priceInput}
               onChange={(event) => {
-                setPriceInput(Boolean(event.currentTarget.value));
+                setPriceInput(Boolean(event.currentTarget.checked));
               }}
             />
           </label>
@@ -319,6 +323,24 @@ export default function Admin(props: Props) {
           <hr />
         </div>
         <div css={mapStyles}>
+          <input
+            placeholder="search"
+            onChange={(e) => {
+              if (filteredEvents.length <= 0) {
+                setFilteredEvents(events);
+              }
+
+              if (e.currentTarget.value.length <= 0) {
+                setEvents(filteredEvents);
+              } else {
+                const filteredEvent = events.filter((event) => {
+                  return event.eventName.includes(e.currentTarget.value);
+                });
+
+                setEvents(filteredEvent);
+              }
+            }}
+          />
           {events?.map((event) => {
             return (
               <div css={eventStyles} key={`eventId-${event.id}`}>
@@ -349,86 +371,6 @@ export default function Admin(props: Props) {
           })}
         </div>
       </div>
-      {/* {events.map((event) => {
-        const isEventOnEdit = onEditId === event.id;
-
-        return (
-          <div key={event.id}>
-            <input
-              value={isEventOnEdit ? eventNameOnEditInput : event.eventName}
-              disabled={!isEventOnEdit}
-              onChange={(event) => {
-                seteventNameOnEditInput(event.currentTarget.value);
-              }}
-            />
-            <input
-              value={isEventOnEdit ? descriptionOnEditInput : event.description}
-              disabled={!isEventOnEdit}
-              onChange={(event) => {
-                setDescriptionOnEditInput(event.currentTarget.value);
-              }}
-            />
-            <input
-              value={isEventOnEdit ? addressOnEditInput : event.address}
-              disabled={!isEventOnEdit}
-              onChange={(event) => {
-                setAddressOnEditInput(event.currentTarget.value);
-              }}
-            />
-            <input
-              type="date"
-              defaultValue={
-                isEventOnEdit
-                  ? dateOnEditInput
-                  : event.eventDate.toLocaleDateString('en-CA')
-              }
-              disabled={!isEventOnEdit}
-              onChange={(event) => {
-                setDateOnEditInput(event.currentTarget.value);
-              }}
-            />
-            <select
-              value={isEventOnEdit ? categoryOnEditInput : event.categoryId}
-              disabled={!isEventOnEdit}
-              onChange={(event) => {
-                setCategoryOnEditInput(event.currentTarget.value);
-              }}
-            />
-            <input
-              value={isEventOnEdit ? priceOnEditInput : event.isFree}
-              disabled={!isEventOnEdit}
-              onChange={(event) => {
-                setPriceOnEditInput(event.currentTarget.value);
-              }}
-            />
-
-            {!isEventOnEdit ? (
-              <button
-                onClick={() => {
-                  setOnEditId(event.id);
-                  seteventNameOnEditInput(event.eventName);
-                  setDescriptionOnEditInput(event.description);
-                  setAddressOnEditInput(event.address);
-                  setDateOnEditInput(event.eventDate);
-                  setPriceOnEditInput(event.isFree);
-                }}
-              >
-                edit
-              </button>
-            ) : (
-              <button
-                onClick={async () => {
-                  setOnEditId(undefined);
-                  await updateEventFromApiById(event.id);
-                }}
-              >
-                save
-              </button>
-            )}
-            <br />
-          </div>
-        );
-      })} */}
     </>
   );
 }

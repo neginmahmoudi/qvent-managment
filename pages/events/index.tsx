@@ -3,6 +3,8 @@ import { css } from '@emotion/react';
 import { GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useState } from 'react';
+import { Category, getCategories } from '../../database/categories';
 import { EventDTO, getEventsWithJoint } from '../../database/events';
 
 const hStyles = css`
@@ -70,19 +72,68 @@ const iconStyles = css`
 `;
 
 type Props = {
-  eventsList: EventDTO[];
+  filteredEvents: EventDTO[];
+  categoryList: Category[];
 };
 export default function EventFromDataBase(props: Props) {
+  const [allEvents, setAllEvents] = useState<EventDTO[]>(props.filteredEvents);
+  const [categoryFilter, setCategoryFilter] = useState(0);
+  const [filteredEvents, setFilteredEvents] = useState(props.filteredEvents);
   return (
     <div>
       <Head>
         <title>list of events</title>
         <meta name="description" content="List of events in qvent app" />
       </Head>
+      {/* <input
+        placeholder="search"
+        onChange={(e) => {
+          if (filteredEvents.length <= 0) {
+            setFilteredEvents(events);
+          }
+
+          if (e.currentTarget.value.length <= 0) {
+            setEvents(filteredEvents);
+          } else {
+            const filteredEvent = events.filter((event) => {
+              return event.categoryName.includes(e.currentTarget.value);
+            });
+
+            setEvents(filteredEvent);
+          }
+        }}
+      /> */}
+      <select
+        required={true}
+        value={categoryFilter}
+        onChange={(e) => {
+          setCategoryFilter(Number(e.currentTarget.value));
+          setFilteredEvents(props.filteredEvents);
+          console.log(filteredEvents);
+
+          if (e.currentTarget.value !== 0) {
+            alert(e.currentTarget.value);
+            const filteredEvent = filteredEvents.filter((event) => {
+              return event.categoryId === Number(e.currentTarget.value);
+            });
+
+            setFilteredEvents(filteredEvent);
+          }
+        }}
+      >
+        <option value={0}>select your favorite category</option>
+        {props.categoryList?.map((category) => {
+          return (
+            <option value={category.id} key={`categoriesList-${category.id}`}>
+              {category.categoryName}
+            </option>
+          );
+        })}
+      </select>
       <h1 css={hStyles}>all events</h1>
       <p css={hoverStyles}>To find out more click on your favorite event !</p>
       <div css={wrapstyles}>
-        {props.eventsList?.map((event) => {
+        {filteredEvents?.map((event) => {
           return (
             <div key={`events-${event.id}`} css={containerStyles}>
               <a href={`events/${event.id}`}>
@@ -119,10 +170,11 @@ export async function getServerSideProps(): Promise<
   GetServerSidePropsResult<Props>
 > {
   const eventsList = await getEventsWithJoint();
-
+  const categoryList = await getCategories();
   return {
     props: {
-      eventsList: JSON.parse(JSON.stringify(eventsList)),
+      filteredEvents: JSON.parse(JSON.stringify(eventsList)),
+      categoryList: categoryList,
     },
   };
 }

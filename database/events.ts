@@ -8,7 +8,7 @@ export type Event = {
   eventDate: String;
   categoryId: number;
   userId: number;
-  isFree: boolean;
+  free: boolean;
 };
 export type EventDTO = {
   id: number;
@@ -32,18 +32,18 @@ export async function getEvent() {
 
 export async function getEventsWithJoint() {
   const events = await sql<EventDTO[]>`
-  SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
-FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
-order by  events.event_date desc;
+  SELECT events.id, events.event_name, events.description, events.address,  events.event_date, events.category_id, events.user_id, events.free,     categories.category_name, users.username
+  FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
+  order by  events.event_date desc;
 `;
   return events;
 }
 // for category on the events page
 export async function getEventsWithJointByCategoryId(id: number) {
   const events = await sql<EventDTO[]>`
-SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
-FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
-WHERE events.category_id=${id};
+  SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
+  FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
+  WHERE events.category_id=${id};
 `;
   return events;
 }
@@ -57,7 +57,6 @@ export async function getEventById(id: number) {
 
 export async function getEventByLogedInUser(id: number) {
   const events = await sql<Event[]>`
-
   SELECT * FROM events where user_id=${id};
 `;
   return events;
@@ -87,9 +86,9 @@ export async function getEventByIdAndValidSessionToken(
 // just to try do not push
 export async function getFoundEventById(id: number) {
   const [event] = await sql<EventDTO[]>`
-    SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
-FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
-WHERE events.id=${id};
+  SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
+  FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
+  WHERE events.id=${id};
   `;
   return event;
 }
@@ -101,7 +100,7 @@ export async function createEvent(
   eventDate: Date,
   categoryId: number,
   userId: number,
-  isFree: boolean,
+  free: boolean,
 ) {
   const [event] = await sql<Event[]>`
     INSERT INTO events
@@ -113,7 +112,7 @@ export async function createEvent(
        user_id,
        free)
     VALUES
-      (${eventName}, ${description}, ${address},${eventDate},${categoryId},${userId},${isFree})
+      (${eventName}, ${description}, ${address},${eventDate},${categoryId},${userId},${free})
     RETURNING *
   `;
   return event;
@@ -126,11 +125,8 @@ export async function updateEventById(
   address: string,
   eventDate: Date,
   categoryId: number,
-  isFree: boolean,
+  free: boolean,
 ) {
-  console.log('editedEvent', id);
-  // const strsql = `UPDATE events SET event_name = '${eventName}', description = '${description}', address = '${address}', category_id=${categoryId}, free=${isFree} WHERE id = ${id} RETURNING * `;
-
   const [event] = await sql<Event[]>`
     UPDATE
       events
@@ -140,7 +136,7 @@ export async function updateEventById(
     address = ${address},
     category_id=${categoryId},
     event_date=${eventDate},
-    free=${isFree}
+    free=${free}
     WHERE
       id = ${id}
     RETURNING *
