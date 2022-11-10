@@ -136,7 +136,7 @@ export async function updateEventById(
     UPDATE
       events
     SET
-    image=${image}
+    image=${image},
     event_name = ${eventName},
     description = ${description},
     address = ${address},

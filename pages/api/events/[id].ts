@@ -72,8 +72,8 @@ export default async function handler(
 
     const newEvent = await updateEventById(
       eventId,
-      eventName,
       image,
+      eventName,
       description,
       address,
       eventDate,

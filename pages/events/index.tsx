@@ -1,4 +1,4 @@
-import { PersonCircle } from '@emotion-icons/bootstrap';
+import { Search } from '@emotion-icons/bootstrap';
 import { css } from '@emotion/react';
 import { GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
@@ -67,6 +67,7 @@ const followerStyles = css`
   font-size: 15px;
 `;
 const iconStyles = css`
+  margin-left: 20px;
   width: 17px;
   height: 17px;
 `;
@@ -134,7 +135,7 @@ export default function EventFromDataBase(props: Props) {
                   <div>{event.eventDate.split('T')[0]}</div>
                   <div>{event.categoryName}</div>
                   <div css={followerStyles}>
-                    followers <PersonCircle css={iconStyles} />
+                    <Search css={iconStyles} />
                   </div>
                 </div>
               </a>
