@@ -1,3 +1,4 @@
+import { ChevronCompactLeft } from '@emotion-icons/bootstrap';
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
@@ -68,10 +69,10 @@ export default function SingleEvent(props: Props) {
     <div css={itemsStyles}>
       <div>
         <Image
-          src="/showcart.jpeg"
-          alt="logo of the site"
-          width="300px"
-          height="300px"
+          src={props.foundEventsss.image}
+          width={200}
+          height={200}
+          alt="preview"
         />
       </div>
 
@@ -112,6 +113,7 @@ export async function getServerSideProps(
       },
     };
   }
+  console.log(JSON.parse(JSON.stringify(foundEvent)));
   return {
     props: {
       foundEventsss: JSON.parse(JSON.stringify(foundEvent)),

@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  compiler: {
+    emotion: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -13,9 +16,4 @@ const nextConfig = {
     ],
   },
 };
-module.exports = {
-  nextConfig,
-  compiler: {
-    emotion: true,
-  },
-};
+module.exports = nextConfig;

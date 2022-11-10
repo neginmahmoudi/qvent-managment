@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Category, getCategories } from '../../database/categories';
@@ -109,6 +110,7 @@ type Props = {
   categoriesList: Category[];
   eventsss: Event[];
   user: UserHier;
+  cloudinaryAPI: string | undefined;
 };
 
 export default function Admin(props: Props) {
@@ -116,11 +118,33 @@ export default function Admin(props: Props) {
   const [eventNameInput, setEventNameInput] = useState('');
   const [descriptionInput, setDescriptionInput] = useState('');
   const [addressInput, setAddressInput] = useState('');
+  const [image, setImage] = useState('');
   const [dateInput, setDateInput] = useState<string>();
   const [priceInput, setPriceInput] = useState(false);
   const [categoryIdInput, setCategoryIdInput] = useState(0);
   const [onEditId, setOnEditId] = useState<number>(0);
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
+  // cloudinary part
+  const uploadImage = async (event: any) => {
+    const files = event.currentTarget.files;
+    const formData = new FormData();
+    formData.append('file', files[0]);
+    formData.append('upload_preset', 'events_photo');
+
+    const response = await fetch(
+      `	https://api.cloudinary.com/v1_1/${props.cloudinaryAPI}/image/upload`,
+      {
+        method: 'POST',
+        body: formData,
+      },
+    );
+    const file = await response.json();
+    console.log('file url address', file.secure_url);
+
+    setImage(file.secure_url);
+  };
+
+  // calling all events from the database
   async function getEventsFromApi() {
     setEvents(props.eventsss);
   }
@@ -136,6 +160,7 @@ export default function Admin(props: Props) {
         },
         body: JSON.stringify({
           userId: props.user.id.toString(),
+          image: image,
           eventName: eventNameInput,
           description: descriptionInput,
           address: addressInput,
@@ -175,6 +200,7 @@ export default function Admin(props: Props) {
       },
       body: JSON.stringify({
         eventId: onEditId.toString(),
+        image: image,
         eventName: eventNameInput,
         description: descriptionInput,
         address: addressInput,
@@ -200,6 +226,7 @@ export default function Admin(props: Props) {
     if (e) {
       setAddressInput(e.address);
       setEventNameInput(e.eventName);
+      setImage(e.image);
       setDescriptionInput(e.description);
       setDateInput(e.eventDate.split('T')[0]);
       setCategoryIdInput(e.categoryId);
@@ -215,6 +242,7 @@ export default function Admin(props: Props) {
     setEventNameInput('');
     setDescriptionInput('');
     setDateInput('');
+    setImage('');
     setCategoryIdInput(0);
     setPriceInput(false);
   }
@@ -234,7 +262,11 @@ export default function Admin(props: Props) {
       <div css={flexStyles}>
         <div css={containerStyles}>
           <h1>Events Form</h1>
-
+          <label>
+            Upload an image:
+            <input type="file" name="image" onChange={uploadImage} />
+          </label>
+          <Image src={image} width={200} height={200} alt="preview" />
           <input
             placeholder="Event Name"
             value={eventNameInput}
@@ -380,6 +412,7 @@ export async function getServerSideProps(
 ): Promise<GetServerSidePropsResult<Props>> {
   const token = context.req.cookies.sessionToken;
   const user = token && (await getUserBySessionToken(token));
+  const cloudinaryAPI = process.env.CLOUDINARY_NAME;
   if (!user) {
     return {
       redirect: {
@@ -396,6 +429,7 @@ export async function getServerSideProps(
       categoriesList: categoriesList,
       eventsss: JSON.parse(JSON.stringify(eventsByLogedInUser)),
       user: user,
+      cloudinaryAPI: cloudinaryAPI,
     },
   };
 }

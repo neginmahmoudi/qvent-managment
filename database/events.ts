@@ -4,6 +4,7 @@ export type Event = {
   id: number;
   eventName: string;
   description: string;
+  image: string;
   address: string;
   eventDate: String;
   categoryId: number;
@@ -14,6 +15,7 @@ export type EventDTO = {
   id: number;
   eventName: string;
   description: string;
+  image: string;
   address: string;
   eventDate: string;
   categoryId: number;
@@ -32,7 +34,7 @@ export async function getEvent() {
 
 export async function getEventsWithJoint() {
   const events = await sql<EventDTO[]>`
-  SELECT events.id, events.event_name, events.description, events.address,  events.event_date, events.category_id, events.user_id, events.free,     categories.category_name, users.username
+  SELECT events.id, events.image, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free,categories.category_name, users.username
   FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
   order by  events.event_date desc;
 `;
@@ -41,7 +43,7 @@ export async function getEventsWithJoint() {
 // for category on the events page
 export async function getEventsWithJointByCategoryId(id: number) {
   const events = await sql<EventDTO[]>`
-  SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
+  SELECT events.id, events.image, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
   FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
   WHERE events.category_id=${id};
 `;
@@ -86,7 +88,7 @@ export async function getEventByIdAndValidSessionToken(
 // just to try do not push
 export async function getFoundEventById(id: number) {
   const [event] = await sql<EventDTO[]>`
-  SELECT events.id, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
+  SELECT events.id, events.image, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
   FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
   WHERE events.id=${id};
   `;
@@ -94,6 +96,7 @@ export async function getFoundEventById(id: number) {
 }
 
 export async function createEvent(
+  image: string,
   eventName: string,
   description: string,
   address: string,
@@ -104,7 +107,8 @@ export async function createEvent(
 ) {
   const [event] = await sql<Event[]>`
     INSERT INTO events
-      ( event_name,
+      ( image,
+       event_name,
        description,
        address,
        event_date,
@@ -112,7 +116,7 @@ export async function createEvent(
        user_id,
        free)
     VALUES
-      (${eventName}, ${description}, ${address},${eventDate},${categoryId},${userId},${free})
+      (${image},${eventName}, ${description}, ${address},${eventDate},${categoryId},${userId},${free})
     RETURNING *
   `;
   return event;
@@ -120,6 +124,7 @@ export async function createEvent(
 
 export async function updateEventById(
   id: number,
+  image: string,
   eventName: string,
   description: string,
   address: string,
@@ -131,6 +136,7 @@ export async function updateEventById(
     UPDATE
       events
     SET
+    image=${image}
     event_name = ${eventName},
     description = ${description},
     address = ${address},

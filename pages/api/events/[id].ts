@@ -44,6 +44,7 @@ export default async function handler(
   if (request.method === 'PUT') {
     // NOT getting the id from the body since is already on the query
     const eventName = request.body?.eventName;
+    const image = request.body?.image;
     const description = request.body?.description;
     const address = request.body?.address;
     const eventDate = request.body?.eventDate;
@@ -55,6 +56,7 @@ export default async function handler(
     if (
       !(
         eventName ||
+        image ||
         description ||
         address ||
         eventDate ||
@@ -71,6 +73,7 @@ export default async function handler(
     const newEvent = await updateEventById(
       eventId,
       eventName,
+      image,
       description,
       address,
       eventDate,

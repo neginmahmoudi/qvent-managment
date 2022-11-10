@@ -23,15 +23,18 @@ export default async function handler(
 
   if (request.method === 'POST') {
     const eventName = request.body?.eventName;
+    const image = request.body?.image;
     const description = request.body?.description;
     const address = request.body?.address;
     const eventDate = request.body?.eventDate;
     const categoryId = request.body?.categoryId;
-    const userId = request.body?.userId;
+    const userId = Number(request.body?.userId);
     const free = request.body?.free;
+    console.log(typeof userId, typeof categoryId);
     if (
       !(
         eventName &&
+        image &&
         description &&
         address &&
         eventDate &&
@@ -45,6 +48,7 @@ export default async function handler(
     }
     // create a new event using the database util function
     const newEvent = await createEvent(
+      image,
       eventName,
       description,
       address,

@@ -119,10 +119,10 @@ export default function EventFromDataBase(props: Props) {
               <a href={`events/${event.id}`}>
                 <div css={imgStyles}>
                   <Image
-                    src="/showcart.jpeg"
-                    alt="logo of the site"
-                    width="240px"
-                    height="200px"
+                    src={event.image}
+                    width={200}
+                    height={200}
+                    alt="preview"
                   />
                 </div>
 
