@@ -22,7 +22,6 @@ export default async function handler(
   }
 
   const eventId = Number(request.query.id);
-  console.log('!!!!!!!!!!!!!!!!!!!', eventId);
   if (!eventId) {
     return response.status(404).json({ message: 'Not a valid id' });
   }
@@ -33,11 +32,11 @@ export default async function handler(
       request.cookies.sessionToken,
     );
 
-    // checka if the event exist
+    // check if the event exist
     if (!event) {
       return response
         .status(404)
-        .json({ message: 'Not a valid Id or a valid sesion token' });
+        .json({ message: 'Not a valid Id or a valid session token' });
     }
     return response.status(200).json(event);
   }

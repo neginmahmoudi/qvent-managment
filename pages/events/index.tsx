@@ -89,6 +89,10 @@ export default function EventFromDataBase(props: Props) {
         value={categoryFilter}
         onChange={(e) => {
           setCategoryFilter(Number(e.currentTarget.value));
+          if (Number(e.currentTarget.value) === 0) {
+            setFilteredEvents(props.filteredEvents);
+          }
+
           if (Number(e.currentTarget.value) !== 0) {
             const filteredEvent = props.filteredEvents.filter((event) => {
               return event.categoryId === Number(e.currentTarget.value);
@@ -97,7 +101,7 @@ export default function EventFromDataBase(props: Props) {
           }
         }}
       >
-        <option value={0}>select your favorite category</option>
+        <option value={0}>All categories</option>
         {props.categoryList?.map((category) => {
           return (
             <option value={category.id} key={`categoriesList-${category.id}`}>

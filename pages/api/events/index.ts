@@ -6,8 +6,6 @@ export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse,
 ) {
-  console.log('session is passed', request.cookies.sessionToken);
-
   const session =
     request.cookies.sessionToken &&
     (await getValidSessionByToken(request.cookies.sessionToken));
@@ -24,7 +22,6 @@ export default async function handler(
   }
 
   if (request.method === 'POST') {
-    console.log(request.body);
     const eventName = request.body?.eventName;
     const description = request.body?.description;
     const address = request.body?.address;
@@ -32,7 +29,6 @@ export default async function handler(
     const categoryId = request.body?.categoryId;
     const userId = request.body?.userId;
     const free = request.body?.free;
-    console.log('free', free);
     if (
       !(
         eventName &&
@@ -48,7 +44,6 @@ export default async function handler(
         .json({ message: 'one of the properties of the form is missing' });
     }
     // create a new event using the database util function
-    console.log(eventName);
     const newEvent = await createEvent(
       eventName,
       description,

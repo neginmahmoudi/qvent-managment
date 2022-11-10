@@ -12,13 +12,13 @@ function UploadImage({ setImageUrl }: Props) {
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const newFile = e.target.files?.[0];
     if (!newFile) return;
-    // setFile(newFile);
+    setFile(newFile);
     /* Creating a URL for the file. */
     setPreview(URL.createObjectURL(newFile));
     /* Creating a form data object and appending the file and the upload preset to it. */
     const formData = new FormData();
     formData.append('file', newFile);
-    formData.append('upload_preset', 'qvent-managment');
+    formData.append('upload_preset', 'otvoeval');
     /* Sending the image to cloudinary and getting the url back. */
     const data = await fetch(
       'https://api.cloudinary.com/v1_1/dawnyquoz/image/upload',
@@ -43,7 +43,7 @@ function UploadImage({ setImageUrl }: Props) {
         onChange={handleFileChange}
       />
       {!!preview && (
-        <Image width={100} height={100} src={String(preview)} alt="preview" />
+        <Image width={200} height={200} src={String(preview)} alt="preview" />
       )}
       <button onClick={() => postImageHandler()}>Upload</button>
     </div>
