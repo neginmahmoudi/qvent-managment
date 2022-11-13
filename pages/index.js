@@ -28,14 +28,14 @@ const buttonStyles = css`
   border-radius: 20px;
   border: none;
   margin-bottom: 120px;
-  background: linear-gradient(96deg, #cc3bb5, #5ad7a2, #8ac480, #c6ad56);
+  background: #7b5980;
   font-size: 35px;
   font-weight: 200;
   font-family: cursive;
   color: #fff;
   :hover {
     transform: scale(0.9);
-    box-shadow: 5px 10px #918f89;
+    box-shadow: 5px 10px #ba55d3;
   }
 `;
 export default function Home() {
@@ -48,7 +48,7 @@ export default function Home() {
       <Image
         src="/ilus3.jpeg"
         alt="landing page image"
-        width="1530.2px"
+        width="1530px"
         height="600px"
         css={imageStyles}
       />

@@ -4,9 +4,9 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Category, getCategories } from '../../database/categories';
-import { Event, getEventByLogedInUser } from '../../database/events';
-import { getUserBySessionToken } from '../../database/users';
+import { Category, getCategories } from '../../../database/categories';
+import { Event, getEventByLogedInUser } from '../../../database/events';
+import { getUserBySessionToken } from '../../../database/users';
 
 const flexStyles = css`
   display: flex;
@@ -14,8 +14,8 @@ const flexStyles = css`
 const containerStyles = css`
   display: flex;
   margin: 0 auto;
-  width: 500px;
-  height: 600px;
+  width: 600px;
+  height: 800px;
   flex-direction: column;
   align-items: center;
 
@@ -33,17 +33,7 @@ const containerStyles = css`
     padding: 8px;
     background-color: #f3f8e6;
   }
-  button {
-    padding: 10px;
-    width: 120px;
-    border-radius: 10px;
-    background-color: #42b883;
-    color: #f3f8e6;
-    :hover {
-      cursor: pointer;
-      box-shadow: 4px 4px grey;
-    }
-  }
+
   select {
     border: none;
     border-radius: 5px;
@@ -71,14 +61,14 @@ const eventStyles = css`
   margin-bottom: 30px;
   width: 600px;
   background-color: aliceblue;
-  height: 60px;
+  height: 70px;
   border-radius: 25px;
   a {
     text-decoration: none;
     color: black;
     margin-right: 10px;
     :hover {
-      color: burlywood;
+      color: #e4c7a2;
     }
   }
   button {
@@ -100,7 +90,53 @@ const eventStyles = css`
 const mapStyles = css`
   margin-top: 100px;
   margin-right: 100px;
+  input {
+    width: 300px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-bottom: 40px;
+  }
 `;
+const imgStyles = css`
+  background-color: #d8d7d7;
+  margin-top: 20px;
+  margin-left: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border: 1px solid gray;
+  font-family: cursive;
+  font-size: smaller;
+  color: #a2a2a2;
+`;
+const btn2Styles = css`
+  padding: 10px;
+  width: 120px;
+  border: none;
+  margin-left: 20px;
+  font-size: 15px;
+  border-radius: 10px;
+  background-color: red;
+  color: antiquewhite;
+  :hover {
+    cursor: pointer;
+    box-shadow: 4px 4px grey;
+  }
+`;
+const btnStyles = css`
+  padding: 10px;
+  border: none;
+  width: 120px;
+  border-radius: 10px;
+  font-size: 15px;
+  margin-left: 20px;
+  background-color: #42b883;
+  color: #f3f8e6;
+  :hover {
+    cursor: pointer;
+    box-shadow: 4px 4px grey;
+  }
+`;
+
 type UserHier = {
   id: number;
   username: string;
@@ -262,14 +298,22 @@ export default function Admin(props: Props) {
       <div css={flexStyles}>
         <div css={containerStyles}>
           <h1>Events Form</h1>
-          <label>
-            Upload an image:
+          <div>
             <input type="file" name="image" onChange={uploadImage} />
-          </label>
-          <Image src={image} width={200} height={200} alt="preview" />
+            <div css={imgStyles}>
+              <Image
+                src={image}
+                width={200}
+                height={200}
+                alt="upload an image "
+              />
+            </div>
+          </div>
+
           <input
             placeholder="Event Name"
             value={eventNameInput}
+            required
             onChange={(event) => {
               setEventNameInput(event.currentTarget.value);
             }}
@@ -280,6 +324,7 @@ export default function Admin(props: Props) {
           <br />
           <textarea
             placeholder="Description"
+            required
             value={descriptionInput}
             onChange={(event) => {
               setDescriptionInput(event.currentTarget.value);
@@ -290,6 +335,7 @@ export default function Admin(props: Props) {
 
           <input
             placeholder="Location"
+            required
             value={addressInput}
             onChange={(event) => {
               setAddressInput(event.currentTarget.value);
@@ -302,13 +348,14 @@ export default function Admin(props: Props) {
             <input
               type="date"
               value={dateInput}
+              required
               onChange={(event) => {
                 setDateInput(event.currentTarget.value);
               }}
             />
             <label> Category:</label>
             <select
-              required={true}
+              required
               value={categoryIdInput}
               onChange={(event) => {
                 setCategoryIdInput(Number(event.currentTarget.value));
@@ -333,6 +380,7 @@ export default function Admin(props: Props) {
             free
             <input
               type="checkbox"
+              required
               checked={priceInput}
               onChange={(event) => {
                 setPriceInput(Boolean(event.currentTarget.checked));
@@ -343,13 +391,14 @@ export default function Admin(props: Props) {
           <div>
             {' '}
             <button
+              css={btnStyles}
               onClick={async () => {
                 await createEventFromApi();
               }}
             >
               submit
             </button>
-            <Link href="/profile">back</Link>
+            <button css={btn2Styles}>clear</button>
           </div>
 
           <hr />
@@ -378,7 +427,7 @@ export default function Admin(props: Props) {
               <div css={eventStyles} key={`eventId-${event.id}`}>
                 <div>EVENT: {event.eventName} </div>
                 <div>
-                  <Link href="/private-profile"> more</Link>
+                  <Link href={`/events/admin/${event.id}`}> more</Link>
                   <button
                     onClick={() => {
                       edit(event.id);

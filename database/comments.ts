@@ -6,6 +6,13 @@ export type Comment = {
   eventId: number;
   text: string;
 };
+export type CommentDTO = {
+  id: number;
+  userId: number;
+  username: string;
+  eventId: number;
+  text: string;
+};
 
 export async function getComments() {
   const comments = await sql<Comment[]>`
@@ -28,7 +35,7 @@ export async function createComment(
     INSERT INTO comments
       ( text,
        event_id,
-       user_id,
+       user_id
        )
     VALUES
       (${text},${eventId},${userId})
@@ -55,6 +62,14 @@ export async function getCommentByIdAndValidSessionToken(
       comments.id = ${id}
   `;
   return comment;
+}
+export async function getFoundCommentByEventId(id: number) {
+  const comments = await sql<CommentDTO[]>`
+  SELECT comments.id, comments.text, comments.user_id, comments.event_id, users.username
+  FROM comments inner join users on comments.user_id =users.id
+  WHERE comments.event_id=${id};
+  `;
+  return comments;
 }
 export async function deleteCommentById(id: number) {
   const [comment] = await sql<Comment[]>`

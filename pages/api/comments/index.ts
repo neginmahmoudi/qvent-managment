@@ -23,8 +23,9 @@ export default async function handler(
 
   if (request.method === 'POST') {
     const text = request.body?.text;
-    const eventId = request.body?.eventId;
+    const eventId = Number(request.body?.eventId);
     const userId = Number(request.body?.userId);
+    console.log('show');
 
     if (!(text && eventId && userId)) {
       return response

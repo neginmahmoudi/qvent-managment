@@ -15,16 +15,16 @@ const flexconstyles = css`
 `;
 const imgStyles = css`
   position: relative;
-  left: 55%;
+  left: 3%;
+  top: 10%;
 `;
 const containerStyles = css`
   width: 300px;
   height: 400px;
   position: absolute;
   top: 25%;
-  left: 40%;
+  left: 47%;
   border: 2px solid black;
-  background-color: #fcfcf5;
   border-radius: 15px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -45,7 +45,6 @@ const formStyles = css`
     border: none;
     border-bottom: 1px solid black;
     border-radius: 10px;
-    background-color: #fff;
   }
 `;
 const buttonStyles = css`
@@ -60,7 +59,7 @@ const buttonStyles = css`
     border: none;
     border-radius: 10px;
     margin-top: 20px;
-    background-color: #f3a267;
+    background-color: #593a7b;
 
     :hover {
       cursor: pointer;
@@ -139,10 +138,13 @@ export default function Login(props: Props) {
     <div css={flexconstyles}>
       <div css={imgStyles}>
         <Image
-          src="/avatar2.jpg"
+          src="/rainbow.jpg"
           alt="logo of the site"
-          width="600px"
-          height="400px"
+          width="700px"
+          height="500px"
+          css={css`
+            opacity: 0.9;
+          `}
         />
       </div>
       <div css={containerStyles}>
@@ -152,7 +154,8 @@ export default function Login(props: Props) {
         </Head>
 
         <div css={formStyles}>
-          <h3> Your Account </h3>
+          <h3> Login Your Account </h3>
+          <br />
           {errors.map((error) => {
             return (
               <p
@@ -168,6 +171,7 @@ export default function Login(props: Props) {
             );
           })}
           <input
+            required
             value={username}
             onChange={(event) => {
               setUsername(event.currentTarget.value.toLowerCase());
@@ -175,6 +179,8 @@ export default function Login(props: Props) {
             placeholder="Username"
           />
           <input
+            required
+            type="password"
             value={password}
             onChange={(event) => {
               setPassword(event.currentTarget.value);

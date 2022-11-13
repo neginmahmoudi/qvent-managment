@@ -20,11 +20,9 @@ const containerStyles = css`
   width: 300px;
   height: 400px;
   position: absolute;
-  top: 25%;
-  left: 40%;
+  top: 20%;
+  left: 50%;
   border: 1px solid black;
-  background-color: #fcfcf5;
-
   border-radius: 15px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -59,7 +57,7 @@ const buttonStyles = css`
     border: none;
     border-radius: 10px;
     margin-top: 20px;
-    background-color: #f3a267;
+    background-color: #60437d;
 
     :hover {
       cursor: pointer;
@@ -133,6 +131,9 @@ export default function Register(props: Props) {
         alt="funny illustration of queer group"
         width="700px"
         height="250px"
+        css={css`
+          opacity: 0.9;
+        `}
       />
       <div css={containerStyles}>
         <Head>

@@ -8,7 +8,7 @@ import { Category, getCategories } from '../../database/categories';
 import { EventDTO, getEventsWithJoint } from '../../database/events';
 
 const hStyles = css`
-  margin-left: 30px;
+  margin-left: 70px;
 `;
 const wrapstyles = css`
   display: flex;
@@ -26,7 +26,7 @@ const containerStyles = css`
   padding: 30px;
   display: flex;
   align-items: flex-start;
-  background-color: #d2ecbe;
+  background-color: #7b5980;
   flex-direction: column;
   width: 300px;
   margin: 2rem;
@@ -37,13 +37,13 @@ const containerStyles = css`
   }
   :hover {
     cursor: pointer;
-    box-shadow: 4px -4px #aeccc6;
+    box-shadow: 4px -4px blueviolet;
     transform: scaleY(0.98);
   }
 `;
 
 const wStyles = css`
-  background-color: #bbe9db;
+  background-color: #f2f6ea;
   margin-left: 20px;
   padding: 10px;
   display: flex;
@@ -61,15 +61,28 @@ const imgStyles = css`
   margin-left: 10px;
   margin: 0 auto;
 `;
-const followerStyles = css`
-  margin-left: 110px;
-  font-weight: bold;
-  font-size: 15px;
-`;
+
 const iconStyles = css`
-  margin-left: 20px;
+  cursor: cell;
+  position: relative;
+  left: 90%;
   width: 17px;
   height: 17px;
+  color: cadetblue;
+`;
+const filterStyles = css`
+  width: 150px;
+  padding: 5px;
+  background-color: #7b5980;
+  color: #ebebeb;
+  position: relative;
+  font-family: cursive;
+  border-radius: 15px;
+  top: 90px;
+  left: 88%;
+  option {
+    background-color: #d1ccb0;
+  }
 `;
 
 type Props = {
@@ -85,8 +98,9 @@ export default function EventFromDataBase(props: Props) {
         <title>list of events</title>
         <meta name="description" content="List of events in qvent app" />
       </Head>
+
       <select
-        required={true}
+        css={filterStyles}
         value={categoryFilter}
         onChange={(e) => {
           setCategoryFilter(Number(e.currentTarget.value));
@@ -111,6 +125,7 @@ export default function EventFromDataBase(props: Props) {
           );
         })}
       </select>
+
       <h1 css={hStyles}>all events</h1>
       <p css={hoverStyles}>To find out more click on your favorite event !</p>
       <div css={wrapstyles}>
@@ -118,25 +133,22 @@ export default function EventFromDataBase(props: Props) {
           return (
             <div key={`events-${event.id}`} css={containerStyles}>
               <a href={`events/${event.id}`}>
-                <div css={imgStyles}>
-                  <Image
-                    src={event.image}
-                    width={200}
-                    height={200}
-                    alt="preview"
-                  />
-                </div>
+                <Image
+                  src={event.image}
+                  width={250}
+                  height={190}
+                  alt="preview"
+                  css={imgStyles}
+                />
 
                 <div css={wStyles}>
-                  <h3>name: {event.eventName}</h3>
-                  <div>location: {event.address}</div>
-                  <div>host:{event.username}</div>
+                  <h3>Event: {event.eventName}</h3>
+                  <div>Host: {event.username}</div>
+                  <div>Location: {event.address}</div>
                   <div>{event.free ? 'free' : ''}</div>
-                  <div>{event.eventDate.split('T')[0]}</div>
+                  <div>Date: {event.eventDate.split('T')[0]}</div>
                   <div>{event.categoryName}</div>
-                  <div css={followerStyles}>
-                    <Search css={iconStyles} />
-                  </div>
+                  <Search css={iconStyles} />
                 </div>
               </a>
             </div>

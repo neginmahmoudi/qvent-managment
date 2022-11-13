@@ -6,10 +6,13 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { CommentDTO, getFoundCommentByEventId } from '../../database/comments';
-import { EventDTO, getFoundEventById } from '../../database/events';
-import { getUserBySessionToken } from '../../database/users';
-import { parseIntFromContextQuery } from '../../utils/contextQuery';
+import {
+  CommentDTO,
+  getFoundCommentByEventId,
+} from '../../../database/comments';
+import { EventDTO, getFoundEventById } from '../../../database/events';
+import { getUserBySessionToken } from '../../../database/users';
+import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
 const containerStyles = css`
   display: flex;
@@ -92,14 +95,14 @@ const msgStyles = css`
   padding: 10px;
 `;
 
-type UserHier = {
+type UserHere = {
   id: number;
   username: string;
 };
 
 type Props = {
   foundEventsss?: EventDTO;
-  user?: UserHier;
+  user?: UserHere;
   databaseComments?: CommentDTO[];
   error?: string;
 };
@@ -229,7 +232,6 @@ export async function getServerSideProps(
 ): Promise<GetServerSidePropsResult<Props>> {
   const token = context.req.cookies.sessionToken;
   const user = token && (await getUserBySessionToken(token));
-  // write a query to get username and comments specific events
   const eventId = parseIntFromContextQuery(context.query.eventId);
 
   if (typeof eventId === 'undefined') {
@@ -252,7 +254,6 @@ export async function getServerSideProps(
   }
   const databaseComments =
     eventId && (await getFoundCommentByEventId(Number(eventId)));
-  // console.log(databaseComments);
   return {
     props: {
       databaseComments: databaseComments ? databaseComments : [],
