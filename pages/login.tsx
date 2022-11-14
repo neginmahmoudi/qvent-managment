@@ -10,20 +10,21 @@ import { LoginResponseBody } from './api/login';
 
 const flexconstyles = css`
   display: flex;
-  background-color: #fff;
   height: 603.2px;
 `;
 const imgStyles = css`
   position: relative;
   left: 3%;
-  top: 10%;
+  top: 15%;
 `;
 const containerStyles = css`
   width: 300px;
   height: 400px;
   position: absolute;
-  top: 25%;
-  left: 47%;
+  background-color: #00352d;
+  color: white;
+  top: 28%;
+  left: 60%;
   border: 2px solid black;
   border-radius: 15px;
   -webkit-border-radius: 10px;
@@ -34,7 +35,7 @@ const containerStyles = css`
 const formStyles = css`
   h3 {
     font-family: cursive;
-    margin-left: 20px;
+    margin-left: 55px;
   }
   input {
     display: block;
@@ -54,12 +55,11 @@ const buttonStyles = css`
     padding: 15px;
     font-size: 16px;
     font-weight: 600;
-    color: #fff;
     margin: auto;
     border: none;
     border-radius: 10px;
     margin-top: 20px;
-    background-color: #593a7b;
+    background-color: #f3eada;
 
     :hover {
       cursor: pointer;
@@ -77,8 +77,7 @@ const buttonStyles = css`
     display: block;
     font-family: cursive;
     text-align: center;
-    text-decoration: none;
-    color: darkblue;
+    color: #f3eada;
     margin-top: -6px;
   }
 `;
@@ -140,8 +139,8 @@ export default function Login(props: Props) {
         <Image
           src="/rainbow.jpg"
           alt="logo of the site"
-          width="700px"
-          height="500px"
+          width="900px"
+          height="550px"
           css={css`
             opacity: 0.9;
           `}
@@ -154,7 +153,7 @@ export default function Login(props: Props) {
         </Head>
 
         <div css={formStyles}>
-          <h3> Login Your Account </h3>
+          <h3>Login Your Account </h3>
           <br />
           {errors.map((error) => {
             return (
@@ -194,7 +193,7 @@ export default function Login(props: Props) {
                 await loginHandler();
               }}
             >
-              Submit
+              Login
             </button>
             <p> Don't have any account ?</p>
             <Link href="/register">Create Account</Link>

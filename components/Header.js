@@ -18,7 +18,7 @@ const navContainerStyles = css`
     color: #fff;
     margin-left: 15px;
     padding: 5px;
-    background-color: #7b5980;
+    background-color: #a32495;
     border-radius: 50%;
   }
 `;
@@ -31,14 +31,15 @@ const navStyles = css`
   a {
     margin-left: 30px;
     text-decoration: none;
+    cursor: pointer;
     color: #272343;
     text-align: center;
     padding: 12px 10px;
     text-decoration: none;
   }
   a:hover {
-    color: blueviolet;
-    border-bottom: 1px solid #91915d;
+    color: #a32495;
+    border-bottom: 1px solid #a32495;
     transition: width 1s;
   }
 `;

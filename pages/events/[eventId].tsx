@@ -14,14 +14,14 @@ import { parseIntFromContextQuery } from '../../utils/contextQuery';
 const containerStyles = css`
   display: flex;
   flex-direction: column;
-  background-color: #f7fffe;
   align-items: center;
 `;
 const itemsStyles = css`
   margin-left: 180px;
   padding: 80px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   img {
     border-radius: 10px;
@@ -29,7 +29,6 @@ const itemsStyles = css`
 `;
 const divStyles = css`
   margin-left: 50px;
-  background-color: #f4fedd;
   width: 350px;
   height: 300px;
   border-radius: 10px;
@@ -43,27 +42,43 @@ const divStyles = css`
   font-weight: 900;
 `;
 const cmStyles = css`
+  border-top: 2px solid black;
+  width: 500px;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   gap: 20px;
   padding: 20px;
   textarea {
-    padding: 8px;
+    padding: 10px;
     box-sizing: border-box;
     border: 1px solid #cfd1db;
     border-radius: 18px;
-    background-color: #f4fedd;
+  }
+  button {
+    margin-left: 10px;
+    :hover {
+      cursor: pointer;
+      box-shadow: -2px 2px gray;
+    }
   }
 `;
 const replyStyles = css`
-  width: 300px;
-  height: 30px;
-  font-size: 14px;
+  width: 408px;
+  height: 70px;
+  font-size: 15px;
   margin-top: 7px;
-  padding: 5px;
-  border-radius: 10px;
+  padding: 10px;
+  border-bottom: 1px solid black;
   font-family: 'Times New Roman', Times, serif;
-  background-color: #f4fedd;
+  background-color: white;
+`;
+const profileStyles = css`
+  background-color: #f3eada;
+  border-radius: 30px;
+  width: 70px;
+  margin-bottom: 5px;
+  padding: 3px;
 `;
 const iconStyles = css`
   width: 18px;
@@ -85,6 +100,7 @@ const icon2Styles = css`
 `;
 const msgStyles = css`
   display: flex;
+  color: #a32495;
   flex-direction: column;
   align-items: center;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -92,14 +108,14 @@ const msgStyles = css`
   padding: 10px;
 `;
 
-type UserHier = {
+type UserHere = {
   id: number;
   username: string;
 };
 
 type Props = {
   foundEventsss?: EventDTO;
-  user?: UserHier;
+  user?: UserHere;
   databaseComments?: CommentDTO[];
   error?: string;
 };
@@ -110,7 +126,6 @@ export default function SingleEvent(props: Props) {
 
   async function getCommentsFromApi() {
     if (props.databaseComments) {
-      console.log(props.databaseComments);
       setAllComments(props.databaseComments);
     }
   }
@@ -160,8 +175,8 @@ export default function SingleEvent(props: Props) {
             src={
               props.foundEventsss ? props.foundEventsss.image : 'uploaded image'
             }
-            width={500}
-            height={500}
+            width={350}
+            height={350}
             alt="preview"
           />
         </div>
@@ -171,43 +186,53 @@ export default function SingleEvent(props: Props) {
             <div>Host:{props.foundEventsss?.username}</div>
             <div>Event Name: {props.foundEventsss?.eventName}</div>
             <div>location: {props.foundEventsss?.address}</div>
-            <div>{props.foundEventsss?.free ? 'free' : ''}</div>
+            <div> {props.foundEventsss?.free ? 'free' : ''}</div>
             <div>Date: {props.foundEventsss?.eventDate.split('T')[0]}</div>
             <div> Category: {props.foundEventsss?.categoryName}</div>
           </div>
         </div>
       </div>
+      <p>Ask your questions here !</p>
       <div css={cmStyles}>
         {props.user ? (
           <>
-            <textarea
-              value={newComment}
-              placeholder=" You have questions ?
+            <div
+              css={css`
+                display: flex;
+              `}
+            >
+              {' '}
+              <textarea
+                value={newComment}
+                placeholder=" You have questions ?
               ask me !"
-              rows={5}
-              cols={50}
-              onChange={(event) => {
-                setNewComment(event.currentTarget.value);
-              }}
-            ></textarea>
-            <div>
-              <button
-                css={btnStyles}
-                onClick={async () => {
-                  await createCommentFromApi();
+                rows={5}
+                cols={50}
+                onChange={(event) => {
+                  setNewComment(event.currentTarget.value);
                 }}
-              >
-                <Send css={icon2Styles} />
-              </button>
+              ></textarea>
+              <div>
+                <button
+                  css={btnStyles}
+                  onClick={async () => {
+                    await createCommentFromApi();
+                  }}
+                >
+                  <Send css={icon2Styles} />
+                </button>
+              </div>
             </div>
             <div>
               {allComments?.map((comment) => {
                 return (
                   <div key={`commentsList-${comment.id}`}>
                     <div css={replyStyles}>
-                      <p>{comment.username}</p>
-                      <Person css={iconStyles} />
-                      {comment.text}
+                      <div css={profileStyles}>
+                        <Person css={iconStyles} />
+                        {comment.username}:
+                      </div>
+                      <div> {comment.text}</div>
                     </div>
                   </div>
                 );
@@ -221,6 +246,10 @@ export default function SingleEvent(props: Props) {
           </div>
         )}
       </div>
+      <br />
+      <br />
+      <br />
+      <br />
     </div>
   );
 }
@@ -229,7 +258,6 @@ export async function getServerSideProps(
 ): Promise<GetServerSidePropsResult<Props>> {
   const token = context.req.cookies.sessionToken;
   const user = token && (await getUserBySessionToken(token));
-  // write a query to get username and comments specific events
   const eventId = parseIntFromContextQuery(context.query.eventId);
 
   if (typeof eventId === 'undefined') {

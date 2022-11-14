@@ -1,5 +1,4 @@
-import { Person } from '@emotion-icons/bootstrap';
-import { Send } from '@emotion-icons/fluentui-system-regular';
+import { Chat, Person, Search } from '@emotion-icons/bootstrap';
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
@@ -16,30 +15,28 @@ import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 
 const containerStyles = css`
   display: flex;
-  flex-direction: column;
-  background-color: #f7fffe;
-  align-items: center;
 `;
 const itemsStyles = css`
+  display: flex;
   margin-left: 180px;
   padding: 80px;
-  display: flex;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
   img {
-    border-radius: 10px;
+    border-radius: 30px;
   }
 `;
 const divStyles = css`
   margin-left: 50px;
-  background-color: #f4fedd;
+  background-color: #f3eada;
   width: 350px;
-  height: 300px;
+  height: 400px;
   border-radius: 10px;
   padding: 20px;
   line-height: 40px;
   display: flex;
   flex-direction: column;
+  gap: 140px;
   align-items: flex-start;
   font-family: monospace;
   font-size: 16px;
@@ -47,44 +44,37 @@ const divStyles = css`
 `;
 const cmStyles = css`
   display: flex;
-  align-items: flex-start;
+  margin-left: 30px;
   gap: 20px;
-  padding: 20px;
-  textarea {
-    padding: 8px;
-    box-sizing: border-box;
-    border: 1px solid #cfd1db;
-    border-radius: 18px;
-    background-color: #f4fedd;
-  }
 `;
 const replyStyles = css`
   width: 300px;
-  height: 30px;
-  font-size: 14px;
+  height: 60px;
+  font-size: 15px;
   margin-top: 7px;
   padding: 5px;
   border-radius: 10px;
   font-family: 'Times New Roman', Times, serif;
-  background-color: #f4fedd;
+  font-size: 16px;
+  border: 1px solid black;
+  div {
+    background-color: #f3eada;
+    border-radius: 30px;
+    width: 70px;
+    margin-bottom: 8px;
+    padding: 3px;
+  }
 `;
 const iconStyles = css`
   width: 18px;
   height: 18px;
   color: grey;
 `;
-const btnStyles = css`
-  width: 30px;
+const iconsStyles = css`
   height: 30px;
-  margin-top: 60px;
-  background-color: #0ba40b;
-  color: antiquewhite;
-  border-radius: 10px;
-  border: none;
-`;
-const icon2Styles = css`
-  width: 18px;
-  height: 18px;
+  width: 30px;
+  margin-bottom: 5px;
+  margin-left: 5px;
 `;
 const msgStyles = css`
   display: flex;
@@ -102,39 +92,19 @@ type UserHere = {
 
 type Props = {
   foundEventsss?: EventDTO;
-  user?: UserHere;
+  user?: UserHere | string;
   databaseComments?: CommentDTO[];
-  error?: string;
+  error?: string | undefined;
 };
 
 export default function SingleEvent(props: Props) {
   const [allComments, setAllComments] = useState<CommentDTO[]>([]);
-  const [newComment, setNewComment] = useState('');
 
   async function getCommentsFromApi() {
     if (props.databaseComments) {
       console.log(props.databaseComments);
       setAllComments(props.databaseComments);
     }
-  }
-  async function createCommentFromApi() {
-    const response = await fetch('/api/comments', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: props.user?.id.toString(),
-        eventId: props.foundEventsss?.id,
-        text: newComment,
-      }),
-    });
-
-    const commentFromApi = (await response.json()) as CommentDTO;
-    const newState = [...allComments, commentFromApi];
-    setAllComments(newState);
-    console.log(newState);
-    setNewComment('');
   }
 
   useEffect(() => {
@@ -163,14 +133,18 @@ export default function SingleEvent(props: Props) {
             src={
               props.foundEventsss ? props.foundEventsss.image : 'uploaded image'
             }
-            width={500}
-            height={500}
+            width={400}
+            height={400}
             alt="preview"
           />
         </div>
 
         <div css={divStyles}>
           <div>
+            <p>
+              details
+              <Search css={iconsStyles} />
+            </p>
             <div>Host:{props.foundEventsss?.username}</div>
             <div>Event Name: {props.foundEventsss?.eventName}</div>
             <div>location: {props.foundEventsss?.address}</div>
@@ -179,50 +153,35 @@ export default function SingleEvent(props: Props) {
             <div> Category: {props.foundEventsss?.categoryName}</div>
           </div>
         </div>
-      </div>
-      <div css={cmStyles}>
-        {props.user ? (
-          <>
-            <textarea
-              value={newComment}
-              placeholder=" You have questions ?
-              ask me !"
-              rows={5}
-              cols={50}
-              onChange={(event) => {
-                setNewComment(event.currentTarget.value);
-              }}
-            ></textarea>
-            <div>
-              <button
-                css={btnStyles}
-                onClick={async () => {
-                  await createCommentFromApi();
-                }}
-              >
-                <Send css={icon2Styles} />
-              </button>
-            </div>
-            <div>
-              {allComments?.map((comment) => {
-                return (
-                  <div key={`commentsList-${comment.id}`}>
-                    <div css={replyStyles}>
-                      <p>{comment.username}</p>
-                      <Person css={iconStyles} />
-                      {comment.text}
+        <div css={cmStyles}>
+          {props.user ? (
+            <>
+              <div>
+                <p>
+                  messages <Chat css={iconsStyles} />{' '}
+                </p>
+
+                {allComments?.map((comment) => {
+                  return (
+                    <div key={`commentsList-${comment.id}`}>
+                      <div css={replyStyles}>
+                        <div>
+                          <Person css={iconStyles} />
+                          {comment.username}
+                        </div>
+                        {comment.text}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <div css={msgStyles}>
+              <div> no comments </div>
             </div>
-          </>
-        ) : (
-          <div css={msgStyles}>
-            <div> to leave a commnet please first log in </div>
-            <Link href="/login">Login</Link>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
@@ -258,7 +217,7 @@ export async function getServerSideProps(
     props: {
       databaseComments: databaseComments ? databaseComments : [],
       foundEventsss: JSON.parse(JSON.stringify(foundEvent)),
-      user: user ? user : null,
+      user,
     },
   };
 }

@@ -1,3 +1,4 @@
+import { Delete } from '@emotion-icons/fluentui-system-regular';
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
@@ -12,10 +13,14 @@ const flexStyles = css`
   display: flex;
 `;
 const containerStyles = css`
+  background-color: #f5eee1;
   display: flex;
   margin: 0 auto;
-  width: 600px;
-  height: 800px;
+  width: 450px;
+  height: 700px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 50px;
   flex-direction: column;
   align-items: center;
 
@@ -23,7 +28,6 @@ const containerStyles = css`
     border: none;
     border-radius: 5px;
     padding: 8px;
-    background-color: #f3f8e6;
     width: 300px;
     height: 100px;
   }
@@ -31,14 +35,16 @@ const containerStyles = css`
     border: none;
     border-radius: 5px;
     padding: 8px;
-    background-color: #f3f8e6;
+    background-color: white;
+  }
+  label {
+    margin-left: 10px;
   }
 
   select {
     border: none;
     border-radius: 5px;
     padding: 8px;
-    background-color: #f3f8e6;
   }
   a {
     color: black;
@@ -48,7 +54,7 @@ const containerStyles = css`
     :hover {
       :hover {
         cursor: pointer;
-        color: red;
+        color: #d04e59;
       }
     }
   }
@@ -57,18 +63,20 @@ const eventStyles = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: cursive;
   margin: 0 auto;
   margin-bottom: 30px;
   width: 600px;
-  background-color: aliceblue;
+  background-color: #3ab8a9;
   height: 70px;
   border-radius: 25px;
+  color: white;
   a {
     text-decoration: none;
-    color: black;
-    margin-right: 10px;
+    color: white;
+    margin-right: 20px;
     :hover {
-      color: #e4c7a2;
+      color: #d04e59;
     }
   }
   button {
@@ -76,7 +84,7 @@ const eventStyles = css`
     width: 60px;
     border-radius: 10px;
     margin-right: 10px;
-    background-color: #3d3d0f;
+    background-color: #87007b;
     color: #f3f8e6;
     :hover {
       cursor: pointer;
@@ -98,12 +106,12 @@ const mapStyles = css`
   }
 `;
 const imgStyles = css`
-  background-color: #d8d7d7;
-  margin-top: 20px;
-  margin-left: 10px;
+  background-color: white;
+  margin-top: 5px;
+  margin-left: 9px;
   border-radius: 4px;
   margin-bottom: 20px;
-  border: 1px solid gray;
+  border: 1px solid whitesmoke;
   font-family: cursive;
   font-size: smaller;
   color: #a2a2a2;
@@ -115,7 +123,7 @@ const btn2Styles = css`
   margin-left: 20px;
   font-size: 15px;
   border-radius: 10px;
-  background-color: red;
+  background-color: #d04e59;
   color: antiquewhite;
   :hover {
     cursor: pointer;
@@ -129,7 +137,7 @@ const btnStyles = css`
   border-radius: 10px;
   font-size: 15px;
   margin-left: 20px;
-  background-color: #42b883;
+  background-color: #3ab8a9;
   color: #f3f8e6;
   :hover {
     cursor: pointer;
@@ -293,7 +301,7 @@ export default function Admin(props: Props) {
     <>
       <Head>
         <title>Frontend event api</title>
-        <meta name="description" content="Content of the api " />
+        <meta name="description" content=" admin form " />
       </Head>
       <div css={flexStyles}>
         <div css={containerStyles}>
@@ -353,7 +361,7 @@ export default function Admin(props: Props) {
                 setDateInput(event.currentTarget.value);
               }}
             />
-            <label> Category:</label>
+            <label> Category: </label>
             <select
               required
               value={categoryIdInput}
@@ -398,7 +406,14 @@ export default function Admin(props: Props) {
             >
               submit
             </button>
-            <button css={btn2Styles}>clear</button>
+            <button
+              css={btn2Styles}
+              onClick={() => {
+                clearStatus();
+              }}
+            >
+              clear
+            </button>
           </div>
 
           <hr />
@@ -425,7 +440,7 @@ export default function Admin(props: Props) {
           {events?.map((event) => {
             return (
               <div css={eventStyles} key={`eventId-${event.id}`}>
-                <div>EVENT: {event.eventName} </div>
+                <div>Event Name: {event.eventName} </div>
                 <div>
                   <Link href={`/events/admin/${event.id}`}> more</Link>
                   <button
@@ -435,7 +450,7 @@ export default function Admin(props: Props) {
                   >
                     edit
                   </button>
-                  <button
+                  <a
                     onClick={async () => {
                       const result = confirm('Want to delete?');
                       if (result) {
@@ -443,9 +458,13 @@ export default function Admin(props: Props) {
                       }
                     }}
                   >
-                    {' '}
-                    remove
-                  </button>
+                    <Delete
+                      css={css`
+                        width: 30px;
+                        height: 40px;
+                      `}
+                    />
+                  </a>
                 </div>
               </div>
             );

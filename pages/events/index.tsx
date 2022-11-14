@@ -8,7 +8,11 @@ import { Category, getCategories } from '../../database/categories';
 import { EventDTO, getEventsWithJoint } from '../../database/events';
 
 const hStyles = css`
-  margin-left: 70px;
+  margin: 0 auto;
+  width: 400px;
+  font-family: monospace;
+  font-size: 15px;
+  text-align: center;
 `;
 const wrapstyles = css`
   display: flex;
@@ -16,17 +20,14 @@ const wrapstyles = css`
   flex-wrap: wrap;
   font-family: cursive;
 `;
-const hoverStyles = css`
-  margin-left: 60px;
-  font-family: monospace;
-`;
 const containerStyles = css`
   border-radius: 10px;
   border: 1px solid #aeccc6;
   padding: 30px;
   display: flex;
   align-items: flex-start;
-  background-color: #7b5980;
+  background-color: #005b4c;
+
   flex-direction: column;
   width: 300px;
   margin: 2rem;
@@ -37,13 +38,13 @@ const containerStyles = css`
   }
   :hover {
     cursor: pointer;
-    box-shadow: 4px -4px blueviolet;
+    box-shadow: 4px -4px #3ab8a9;
     transform: scaleY(0.98);
   }
 `;
 
 const wStyles = css`
-  background-color: #f2f6ea;
+  background-color: #f3eada;
   margin-left: 20px;
   padding: 10px;
   display: flex;
@@ -73,7 +74,7 @@ const iconStyles = css`
 const filterStyles = css`
   width: 150px;
   padding: 5px;
-  background-color: #7b5980;
+  background-color: #a32495;
   color: #ebebeb;
   position: relative;
   font-family: cursive;
@@ -81,7 +82,8 @@ const filterStyles = css`
   top: 90px;
   left: 88%;
   option {
-    background-color: #d1ccb0;
+    background-color: #f7e6bd;
+    color: black;
   }
 `;
 
@@ -125,9 +127,12 @@ export default function EventFromDataBase(props: Props) {
           );
         })}
       </select>
+      <div css={hStyles}>
+        {' '}
+        <h1>All Events</h1>
+        <p>To find out more click on your favorite event !</p>
+      </div>
 
-      <h1 css={hStyles}>all events</h1>
-      <p css={hoverStyles}>To find out more click on your favorite event !</p>
       <div css={wrapstyles}>
         {filteredEvents?.map((event) => {
           return (

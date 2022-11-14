@@ -15,7 +15,7 @@ const divStyles = css`
   font-family: fantasy;
   font-size: 80px;
   -webkit-text-stroke: 2px black;
-  letter-spacing: 6px;
+  letter-spacing: 7px;
   font-weight: 100;
   color: #fff;
 `;
@@ -24,18 +24,19 @@ const imageStyles = css`
   opacity: 0.6;
 `;
 const buttonStyles = css`
-  padding: 20px 60px;
+  padding: 20px 65px;
   border-radius: 20px;
   border: none;
   margin-bottom: 120px;
-  background: #7b5980;
+  background: whitesmoke;
   font-size: 35px;
+  letter-spacing: 1px;
   font-weight: 200;
   font-family: cursive;
   color: #fff;
   :hover {
     transform: scale(0.9);
-    box-shadow: 5px 10px #ba55d3;
+    box-shadow: 5px 10px #654c90;
   }
 `;
 export default function Home() {

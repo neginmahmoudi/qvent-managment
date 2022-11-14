@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion-icons/bootstrap": "^3.27.0",
     "@emotion-icons/entypo-social": "^3.14.0",
+    "@emotion-icons/fluentui-system-filled": "^3.15.0",
     "@emotion-icons/fluentui-system-regular": "^3.15.0",
     "@emotion-icons/ionicons-outline": "^3.14.0",
     "@emotion/react": "^11.10.4",

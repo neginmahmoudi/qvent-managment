@@ -20,8 +20,10 @@ const containerStyles = css`
   width: 300px;
   height: 400px;
   position: absolute;
+  background-color: #00352d;
+  color: white;
   top: 20%;
-  left: 50%;
+  left: 60%;
   border: 1px solid black;
   border-radius: 15px;
   -webkit-border-radius: 10px;
@@ -32,7 +34,7 @@ const containerStyles = css`
 const formStyles = css`
   h3 {
     font-family: cursive;
-    margin-left: 20px;
+    margin-left: 5px;
   }
   input {
     display: block;
@@ -52,12 +54,12 @@ const buttonStyles = css`
     padding: 15px;
     font-size: 16px;
     font-weight: 600;
-    color: #fff;
+
     margin: auto;
     border: none;
     border-radius: 10px;
     margin-top: 20px;
-    background-color: #60437d;
+    background-color: #f3eada;
 
     :hover {
       cursor: pointer;
@@ -74,8 +76,7 @@ const buttonStyles = css`
     display: block;
     font-family: cursive;
     text-align: center;
-    text-decoration: none;
-    color: blue;
+    color: #f3eada;
     margin-top: -10px;
   }
 `;
@@ -129,7 +130,7 @@ export default function Register(props: Props) {
       <Image
         src="/signUp.jpeg"
         alt="funny illustration of queer group"
-        width="700px"
+        width="750px"
         height="250px"
         css={css`
           opacity: 0.9;
