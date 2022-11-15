@@ -1,3 +1,5 @@
+import { FilePerson, ListTask } from '@emotion-icons/bootstrap';
+// import { HomePerson } from '@emotion-icons/fluentui-system-regular';
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
@@ -10,43 +12,56 @@ type Props = {
 };
 const pageStyles = css`
   display: flex;
+  height: 100%;
   font-family: cursive;
+  background-color: #f3eada;
 `;
 const menuStyles = css`
-  width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 180px;
   height: 600px;
-  background-color: orange;
-  border-radius: 10px;
-
-  img {
-    padding: 10px;
-    border-radius: 50%;
-    margin-top: 30px;
-    margin-left: 40px;
-  }
+  background-color: #3ab8a9;
+  border-radius: 5px;
   a {
     text-decoration: none;
-    color: black;
+    color: white;
     line-height: 50px;
     margin-left: 30px;
   }
 `;
 const containerStyles = css`
-  margin-left: 200px;
-  margin-top: 100px;
+  padding: 100px;
+  width: 600px;
+  margin: 0 auto;
 `;
 const buttonStyles = css`
   border: none;
+
   border-radius: 10px;
   width: 300px;
   height: 100px;
-  background-color: pink;
+  background-color: #a32495;
 
   a {
     text-decoration: none;
-    color: black;
+    color: white;
     font-size: 28px;
   }
+`;
+const imgStyles = css`
+  border-radius: 50%;
+  padding: 10px;
+`;
+const iconStyles = css`
+  width: 20px;
+  height: 20px;
+  color: white;
+`;
+const linkStyles = css`
+  margin-top: 40px;
 `;
 export default function UserProfile(props: Props) {
   if (!props.user) {
@@ -70,23 +85,35 @@ export default function UserProfile(props: Props) {
       </Head>
       <div css={pageStyles}>
         <div css={menuStyles}>
-          <Image
-            src="/avatar.jpg"
-            alt="avatar profile picture"
-            width="150px"
-            height="150px"
-          />
-          <br />
-          <br />
-          <br />
-          <Link href="/pages/private-profile">Home</Link>
-          <br />
-          <Link href="/pages/private-profile">profile</Link>
-          <br />
-          <Link href="/events/admin">Events</Link>
+          <div>
+            {' '}
+            <Image
+              src="/avatar.jpg"
+              alt="avatar profile picture"
+              width="150px"
+              height="150px"
+              css={imgStyles}
+            />
+          </div>
+
+          <div css={linkStyles}>
+            {/* <HomePerson css={iconStyles} />
+            <Link href="/events/admin">Home</Link> */}
+
+            <div>
+              {' '}
+              <FilePerson css={iconStyles} />
+              <Link href="/private-profile">pv profile</Link>
+            </div>
+            <div>
+              {' '}
+              <ListTask css={iconStyles} />
+              <Link href="/events/admin">Events info</Link>
+            </div>
+          </div>
         </div>
         <div css={containerStyles}>
-          <h1>welcome back, {props.user.username}!</h1>
+          <h1>welcome to your account, {props.user.username}!</h1>
           <p>to create events click here !</p>
           <button css={buttonStyles}>
             <Link href="/events/admin"> + Create Event</Link>

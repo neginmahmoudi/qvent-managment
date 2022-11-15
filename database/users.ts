@@ -21,6 +21,22 @@ export async function getUserByUsername(username: string) {
 
   return user;
 }
+
+export async function getUsernameById(id: number) {
+  if (!id) return undefined;
+  const [user] = await sql<{ id: number; username: string }[]>`
+  SELECT
+    id,
+    username
+  FROM
+    users
+  WHERE
+    users.id = ${id}
+  `;
+
+  return user;
+}
+
 // only here bc of sensitive data (login part)
 export async function getUserWithPasswordHashByUsername(username: string) {
   if (!username) return undefined;

@@ -304,6 +304,7 @@ export default function Admin(props: Props) {
         <meta name="description" content=" admin form " />
       </Head>
       <div css={flexStyles}>
+        <Link href="/private-profile">back</Link>
         <div css={containerStyles}>
           <h1>Events Form</h1>
           <div>

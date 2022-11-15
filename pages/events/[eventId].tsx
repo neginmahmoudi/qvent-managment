@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { CommentDTO, getFoundCommentByEventId } from '../../database/comments';
 import { EventDTO, getFoundEventById } from '../../database/events';
-import { getUserBySessionToken } from '../../database/users';
+import { getUserBySessionToken, getUsernameById } from '../../database/users';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
 const containerStyles = css`
@@ -143,6 +143,16 @@ export default function SingleEvent(props: Props) {
     });
 
     const commentFromApi = (await response.json()) as CommentDTO;
+    // const user = await getUsernameById(commentFromApi.userId);
+    // const newCompleteComment = {
+    //   ...commentFromApi,
+    //   username: user?.username,
+    // };
+    // const newCompleteComment = {
+    //   ...commentFromApi,
+    //   username: await getUsernameById(commentFromApi.userId),
+    // };
+    // const newState = [...allComments, newCompleteComment];
     const newState = [...allComments, commentFromApi];
     setAllComments(newState);
     console.log(newState);
@@ -169,6 +179,7 @@ export default function SingleEvent(props: Props) {
   }
   return (
     <div css={containerStyles}>
+      <Link href="/events">back</Link>
       <div css={itemsStyles}>
         <div>
           <Image
@@ -253,9 +264,7 @@ export default function SingleEvent(props: Props) {
     </div>
   );
 }
-export async function getServerSideProps(
-  context: GetServerSidePropsContext,
-): Promise<GetServerSidePropsResult<Props>> {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
   const user = token && (await getUserBySessionToken(token));
   const eventId = parseIntFromContextQuery(context.query.eventId);
@@ -280,7 +289,6 @@ export async function getServerSideProps(
   }
   const databaseComments =
     eventId && (await getFoundCommentByEventId(Number(eventId)));
-  // console.log(databaseComments);
   return {
     props: {
       databaseComments: databaseComments ? databaseComments : [],

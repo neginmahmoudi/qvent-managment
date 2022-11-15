@@ -9,7 +9,7 @@ export type Comment = {
 export type CommentDTO = {
   id: number;
   userId: number;
-  username: string;
+  username: string | undefined;
   eventId: number;
   text: string;
 };

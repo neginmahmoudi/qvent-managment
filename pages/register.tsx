@@ -166,6 +166,7 @@ export default function Register(props: Props) {
             placeholder="Email"
           /> */}
           <input
+            required
             value={username}
             onChange={(event) => {
               setUsername(event.currentTarget.value.toLowerCase());
@@ -173,6 +174,8 @@ export default function Register(props: Props) {
             placeholder="Username"
           />
           <input
+            required
+            type="password"
             value={password}
             onChange={(event) => {
               setPassword(event.currentTarget.value);

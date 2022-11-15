@@ -26,8 +26,7 @@ const containerStyles = css`
   padding: 30px;
   display: flex;
   align-items: flex-start;
-  background-color: #005b4c;
-
+  background-color: #00362d;
   flex-direction: column;
   width: 300px;
   margin: 2rem;
@@ -100,7 +99,6 @@ export default function EventFromDataBase(props: Props) {
         <title>list of events</title>
         <meta name="description" content="List of events in qvent app" />
       </Head>
-
       <select
         css={filterStyles}
         value={categoryFilter}

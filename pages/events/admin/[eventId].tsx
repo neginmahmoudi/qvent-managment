@@ -18,6 +18,7 @@ const containerStyles = css`
 `;
 const itemsStyles = css`
   display: flex;
+  justify-content: flex-start;
   margin-left: 180px;
   padding: 80px;
   align-items: center;
@@ -49,7 +50,7 @@ const cmStyles = css`
 `;
 const replyStyles = css`
   width: 300px;
-  height: 60px;
+  height: 80px;
   font-size: 15px;
   margin-top: 7px;
   padding: 5px;
@@ -92,7 +93,7 @@ type UserHere = {
 
 type Props = {
   foundEventsss?: EventDTO;
-  user?: UserHere | string;
+  user?: UserHere | undefined;
   databaseComments?: CommentDTO[];
   error?: string | undefined;
 };
@@ -127,6 +128,7 @@ export default function SingleEvent(props: Props) {
   }
   return (
     <div css={containerStyles}>
+      <Link href="/events/admin">back</Link>
       <div css={itemsStyles}>
         <div>
           <Image
@@ -186,9 +188,7 @@ export default function SingleEvent(props: Props) {
     </div>
   );
 }
-export async function getServerSideProps(
-  context: GetServerSidePropsContext,
-): Promise<GetServerSidePropsResult<Props>> {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
   const user = token && (await getUserBySessionToken(token));
   const eventId = parseIntFromContextQuery(context.query.eventId);

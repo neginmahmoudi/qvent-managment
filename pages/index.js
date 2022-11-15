@@ -28,15 +28,16 @@ const buttonStyles = css`
   border-radius: 20px;
   border: none;
   margin-bottom: 120px;
-  background: whitesmoke;
+  background: #0b3205;
+  color: white;
   font-size: 35px;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   font-weight: 200;
-  font-family: cursive;
-  color: #fff;
+  font-family: fantasy;
+
   :hover {
     transform: scale(0.9);
-    box-shadow: 5px 10px #654c90;
+    box-shadow: 5px 10px #fffade;
   }
 `;
 export default function Home() {
