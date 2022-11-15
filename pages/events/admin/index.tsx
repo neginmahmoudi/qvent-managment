@@ -1,3 +1,4 @@
+import { ArrowLeftCircle } from '@emotion-icons/bootstrap';
 import { Delete } from '@emotion-icons/fluentui-system-regular';
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
@@ -98,6 +99,8 @@ const eventStyles = css`
 const mapStyles = css`
   margin-top: 100px;
   margin-right: 100px;
+  display: flex;
+  flex-direction: column;
   input {
     width: 300px;
     padding: 5px;
@@ -304,7 +307,6 @@ export default function Admin(props: Props) {
         <meta name="description" content=" admin form " />
       </Head>
       <div css={flexStyles}>
-        <Link href="/private-profile">back</Link>
         <div css={containerStyles}>
           <h1>Events Form</h1>
           <div>
@@ -420,6 +422,20 @@ export default function Admin(props: Props) {
           <hr />
         </div>
         <div css={mapStyles}>
+          <div
+            css={css`
+              margin-left: 500px;
+              width: 40px;
+              height: 40px;
+              cursor: pointer;
+            `}
+          >
+            {' '}
+            <Link href="/private-profile">
+              <ArrowLeftCircle />
+            </Link>
+          </div>
+
           <input
             placeholder="search"
             onChange={(e) => {

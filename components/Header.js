@@ -65,9 +65,30 @@ export default function Header(props) {
           <nav css={navStyles}>
             <Link href="/">Home</Link>
             <Link href="/events">Events</Link>
-            {props.user && <div>{props.user.username}</div>}
+            {props.user && <button>{props.user.username}</button>}
             {props.user ? (
-              <Anchor href="/logout">Logout</Anchor>
+              // <div>
+              //   <ul>
+              //     <li>
+              //       <Anchor href="/logout">Logout</Anchor>
+              //     </li>
+              //     <hr />
+              //     <li>
+              //       <Link href="/private-profile">profile</Link>
+              //     </li>
+              //   </ul>
+              //  </div>
+              <div>
+                <ul>
+                  <li>
+                    <Anchor href="/logout">Logout</Anchor>
+                  </li>
+                  <hr />
+                  <li>
+                    <Link href="/private-profile">profile</Link>
+                  </li>
+                </ul>
+              </div>
             ) : (
               <>
                 <Link href="/login">Login</Link>

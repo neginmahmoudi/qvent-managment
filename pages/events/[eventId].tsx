@@ -179,7 +179,6 @@ export default function SingleEvent(props: Props) {
   }
   return (
     <div css={containerStyles}>
-      <Link href="/events">back</Link>
       <div css={itemsStyles}>
         <div>
           <Image

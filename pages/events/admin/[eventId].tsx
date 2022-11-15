@@ -1,6 +1,11 @@
-import { Chat, Person, Search } from '@emotion-icons/bootstrap';
+import {
+  ArrowLeftCircle,
+  Chat,
+  Person,
+  Search,
+} from '@emotion-icons/bootstrap';
 import { css } from '@emotion/react';
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,6 +21,7 @@ import { parseIntFromContextQuery } from '../../../utils/contextQuery';
 const containerStyles = css`
   display: flex;
 `;
+
 const itemsStyles = css`
   display: flex;
   justify-content: flex-start;
@@ -128,7 +134,6 @@ export default function SingleEvent(props: Props) {
   }
   return (
     <div css={containerStyles}>
-      <Link href="/events/admin">back</Link>
       <div css={itemsStyles}>
         <div>
           <Image
@@ -155,6 +160,7 @@ export default function SingleEvent(props: Props) {
             <div> Category: {props.foundEventsss?.categoryName}</div>
           </div>
         </div>
+
         <div css={cmStyles}>
           {props.user ? (
             <>
@@ -184,6 +190,20 @@ export default function SingleEvent(props: Props) {
             </div>
           )}
         </div>
+      </div>
+      <div
+        css={css`
+          margin-top: 20px;
+          margin-right: 20px;
+          width: 40px;
+          height: 40px;
+          cursor: pointer;
+        `}
+      >
+        {' '}
+        <Link href="/events/admin">
+          <ArrowLeftCircle />
+        </Link>
       </div>
     </div>
   );

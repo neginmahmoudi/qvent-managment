@@ -26,7 +26,7 @@ const containerStyles = css`
   padding: 30px;
   display: flex;
   align-items: flex-start;
-  background-color: #00362d;
+  background-color: #37303e;
   flex-direction: column;
   width: 300px;
   margin: 2rem;
@@ -37,8 +37,12 @@ const containerStyles = css`
   }
   :hover {
     cursor: pointer;
-    box-shadow: 4px -4px #3ab8a9;
+    box-shadow: 4px -4px #aba3b4;
     transform: scaleY(0.98);
+  }
+  h3 {
+    text-align: center;
+    margin-bottom: 15px;
   }
 `;
 
@@ -52,7 +56,10 @@ const wStyles = css`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  div:nth-child(4) {
+  :hover {
+    visibility: hidden;
+  }
+  div:nth-child(3) {
     color: red;
   }
 `;
@@ -73,7 +80,7 @@ const iconStyles = css`
 const filterStyles = css`
   width: 150px;
   padding: 5px;
-  background-color: #a32495;
+  background-color: #c34a36;
   color: #ebebeb;
   position: relative;
   font-family: cursive;
@@ -125,6 +132,9 @@ export default function EventFromDataBase(props: Props) {
           );
         })}
       </select>
+      <video width="100" height="100" controls>
+        <source src="/flag.mp4" />
+      </video>
       <div css={hStyles}>
         {' '}
         <h1>All Events</h1>
@@ -136,16 +146,27 @@ export default function EventFromDataBase(props: Props) {
           return (
             <div key={`events-${event.id}`} css={containerStyles}>
               <a href={`events/${event.id}`}>
+                <div
+                  css={css`
+                    background-color: #f3eada;
+                    border-radius: 5px;
+                    height: 55px;
+                    border: 1px solid #aeccc6;
+                    margin-bottom: 3px;
+                  `}
+                >
+                  <h3>Event: {event.eventName}</h3>
+                </div>
+
                 <Image
                   src={event.image}
-                  width={250}
-                  height={190}
+                  width={240}
+                  height={170}
                   alt="preview"
                   css={imgStyles}
                 />
 
                 <div css={wStyles}>
-                  <h3>Event: {event.eventName}</h3>
                   <div>Host: {event.username}</div>
                   <div>Location: {event.address}</div>
                   <div>{event.free ? 'free' : ''}</div>
