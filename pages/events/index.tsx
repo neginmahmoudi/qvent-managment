@@ -22,11 +22,11 @@ const wrapstyles = css`
 `;
 const containerStyles = css`
   border-radius: 10px;
-  border: 1px solid #aeccc6;
+
   padding: 30px;
   display: flex;
   align-items: flex-start;
-  background-color: #37303e;
+  background-color: #202628;
   flex-direction: column;
   width: 300px;
   margin: 2rem;
@@ -37,12 +37,13 @@ const containerStyles = css`
   }
   :hover {
     cursor: pointer;
-    box-shadow: 4px -4px #aba3b4;
-    transform: scaleY(0.98);
+    box-shadow: 4px -4px #4c5355;
   }
   h3 {
     text-align: center;
     margin-bottom: 15px;
+    font-family: monospace;
+    font-size: 18px;
   }
 `;
 
@@ -56,10 +57,7 @@ const wStyles = css`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  :hover {
-    visibility: hidden;
-  }
-  div:nth-child(3) {
+  div:nth-of-type(3) {
     color: red;
   }
 `;
@@ -70,12 +68,12 @@ const imgStyles = css`
 `;
 
 const iconStyles = css`
-  cursor: cell;
   position: relative;
-  left: 90%;
+  text-decoration: underline;
+  left: 85%;
   width: 17px;
   height: 17px;
-  color: cadetblue;
+  color: #260c0c;
 `;
 const filterStyles = css`
   width: 150px;
@@ -85,10 +83,10 @@ const filterStyles = css`
   position: relative;
   font-family: cursive;
   border-radius: 15px;
-  top: 90px;
+  top: 85px;
   left: 88%;
   option {
-    background-color: #f7e6bd;
+    background-color: #ebebeb;
     color: black;
   }
 `;
@@ -132,7 +130,15 @@ export default function EventFromDataBase(props: Props) {
           );
         })}
       </select>
-      <video width="100" height="100" controls>
+      <video
+        width="50px"
+        height="50px"
+        css={css`
+          position: absolute;
+          right: 2%;
+          top: 15%;
+        `}
+      >
         <source src="/flag.mp4" />
       </video>
       <div css={hStyles}>
@@ -155,7 +161,7 @@ export default function EventFromDataBase(props: Props) {
                     margin-bottom: 3px;
                   `}
                 >
-                  <h3>Event: {event.eventName}</h3>
+                  <h3>Event:{event.eventName}</h3>
                 </div>
 
                 <Image
@@ -172,7 +178,7 @@ export default function EventFromDataBase(props: Props) {
                   <div>{event.free ? 'free' : ''}</div>
                   <div>Date: {event.eventDate.split('T')[0]}</div>
                   <div>{event.categoryName}</div>
-                  <Search css={iconStyles} />
+                  <div css={iconStyles}>more</div>
                 </div>
               </a>
             </div>

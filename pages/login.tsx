@@ -21,7 +21,7 @@ const containerStyles = css`
   width: 300px;
   height: 400px;
   position: absolute;
-  background-color: #00352d;
+  background-color: #404547;
   color: white;
   top: 28%;
   left: 60%;
@@ -59,7 +59,7 @@ const buttonStyles = css`
     border: none;
     border-radius: 10px;
     margin-top: 20px;
-    background-color: #f3eada;
+    background-color: #efe3cc;
 
     :hover {
       cursor: pointer;

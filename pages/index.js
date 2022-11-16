@@ -28,7 +28,7 @@ const buttonStyles = css`
   border-radius: 20px;
   border: none;
   margin-bottom: 120px;
-  background: #0b3205;
+  background-color: #404547;
   color: white;
   font-size: 35px;
   letter-spacing: 2px;
@@ -37,7 +37,7 @@ const buttonStyles = css`
 
   :hover {
     transform: scale(0.9);
-    box-shadow: 5px 10px #fffade;
+    box-shadow: 5px 10px #a5acaf;
   }
 `;
 export default function Home() {
@@ -55,8 +55,11 @@ export default function Home() {
         css={imageStyles}
       />
       <div css={divStyles}>
-        <p> welcome to Qvent ! click to see the Events</p>
-        <button onClick={() => (location.href = '/events')} css={buttonStyles}>
+        <p> welcome to Qvent ! click to create your Events</p>
+        <button
+          onClick={() => (location.href = '/events/admin')}
+          css={buttonStyles}
+        >
           Click!
         </button>
       </div>

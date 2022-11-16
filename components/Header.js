@@ -8,7 +8,7 @@ const containerStyles = css`
   display: flex;
   flex-wrap: wrap;
   gap: 200px;
-  justify-content: space-around;
+  justify-content: space-between;
   background-color: #fcfcf5;
   margin-bottom: auto;
 `;
@@ -65,8 +65,20 @@ export default function Header(props) {
           <nav css={navStyles}>
             <Link href="/">Home</Link>
             <Link href="/events">Events</Link>
-            {props.user && <button>{props.user.username}</button>}
+            {props.user && <div>{props.user.username}</div>}
             {props.user ? (
+              // <div>
+              //   <ul>
+              //     <li>
+              <Anchor href="/logout">Logout</Anchor>
+            ) : (
+              //     </li>
+              //     <hr />
+              //     <li>
+              //       <Link href="/private-profile">profile</Link>
+              //     </li>
+              //   </ul>
+              //  </div>
               // <div>
               //   <ul>
               //     <li>
@@ -77,19 +89,7 @@ export default function Header(props) {
               //       <Link href="/private-profile">profile</Link>
               //     </li>
               //   </ul>
-              //  </div>
-              <div>
-                <ul>
-                  <li>
-                    <Anchor href="/logout">Logout</Anchor>
-                  </li>
-                  <hr />
-                  <li>
-                    <Link href="/private-profile">profile</Link>
-                  </li>
-                </ul>
-              </div>
-            ) : (
+              // </div>
               <>
                 <Link href="/login">Login</Link>
                 <Link href="/register">Register</Link>

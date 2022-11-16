@@ -14,7 +14,7 @@ const pageStyles = css`
   display: flex;
   height: 100%;
   font-family: cursive;
-  background-color: #f3eada;
+  background-color: #fefcee;
 `;
 const menuStyles = css`
   display: flex;
@@ -23,7 +23,7 @@ const menuStyles = css`
   gap: 10px;
   width: 180px;
   height: 600px;
-  background-color: #3ab8a9;
+  background-color: #37303e;
   border-radius: 5px;
   a {
     text-decoration: none;
@@ -39,11 +39,13 @@ const containerStyles = css`
 `;
 const buttonStyles = css`
   border: none;
-
   border-radius: 10px;
   width: 300px;
   height: 100px;
-  background-color: #a32495;
+  background-color: #c34a36;
+  :hover {
+    box-shadow: 3px 3px #b0a8b9;
+  }
 
   a {
     text-decoration: none;
@@ -85,7 +87,11 @@ export default function UserProfile(props: Props) {
       </Head>
       <div css={pageStyles}>
         <div css={menuStyles}>
-          <div>
+          <div
+            css={css`
+              margin-top: 20px;
+            `}
+          >
             {' '}
             <Image
               src="/avatar.jpg"
@@ -97,9 +103,6 @@ export default function UserProfile(props: Props) {
           </div>
 
           <div css={linkStyles}>
-            {/* <HomePerson css={iconStyles} />
-            <Link href="/events/admin">Home</Link> */}
-
             <div>
               {' '}
               <FilePerson css={iconStyles} />

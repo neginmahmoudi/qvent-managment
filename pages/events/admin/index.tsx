@@ -306,6 +306,19 @@ export default function Admin(props: Props) {
         <title>Frontend event api</title>
         <meta name="description" content=" admin form " />
       </Head>
+      <div
+        css={css`
+          margin-left: 10px;
+          width: 40px;
+          height: 40px;
+          cursor: pointer;
+        `}
+      >
+        {' '}
+        <Link href="/private-profile">
+          <ArrowLeftCircle />
+        </Link>
+      </div>
       <div css={flexStyles}>
         <div css={containerStyles}>
           <h1>Events Form</h1>
@@ -422,20 +435,6 @@ export default function Admin(props: Props) {
           <hr />
         </div>
         <div css={mapStyles}>
-          <div
-            css={css`
-              margin-left: 500px;
-              width: 40px;
-              height: 40px;
-              cursor: pointer;
-            `}
-          >
-            {' '}
-            <Link href="/private-profile">
-              <ArrowLeftCircle />
-            </Link>
-          </div>
-
           <input
             placeholder="search"
             onChange={(e) => {

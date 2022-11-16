@@ -25,9 +25,9 @@ const containerStyles = css`
 const itemsStyles = css`
   display: flex;
   justify-content: flex-start;
-  margin-left: 180px;
-  padding: 80px;
-  align-items: center;
+  margin-left: 150px;
+  padding: 50px;
+  align-items: flex-start;
   width: 100%;
   img {
     border-radius: 30px;
@@ -58,7 +58,7 @@ const replyStyles = css`
   width: 300px;
   height: 80px;
   font-size: 15px;
-  margin-top: 7px;
+  margin-bottom: 10px;
   padding: 5px;
   border-radius: 10px;
   font-family: 'Times New Roman', Times, serif;
@@ -86,7 +86,7 @@ const iconsStyles = css`
 const msgStyles = css`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: larger;
   padding: 10px;
@@ -125,7 +125,7 @@ export default function SingleEvent(props: Props) {
       <div>
         <Head>
           <title>Event not found</title>
-          <meta name="description" content="event not found" />
+          <meta name="description" content="event not found in profile" />
         </Head>
         <h1>{props.error}</h1>
         sorry , try <Link href="/index.js">this</Link>
@@ -133,70 +133,17 @@ export default function SingleEvent(props: Props) {
     );
   }
   return (
-    <div css={containerStyles}>
-      <div css={itemsStyles}>
-        <div>
-          <Image
-            src={
-              props.foundEventsss ? props.foundEventsss.image : 'uploaded image'
-            }
-            width={400}
-            height={400}
-            alt="preview"
-          />
-        </div>
-
-        <div css={divStyles}>
-          <div>
-            <p>
-              details
-              <Search css={iconsStyles} />
-            </p>
-            <div>Host:{props.foundEventsss?.username}</div>
-            <div>Event Name: {props.foundEventsss?.eventName}</div>
-            <div>location: {props.foundEventsss?.address}</div>
-            <div>{props.foundEventsss?.free ? 'free' : ''}</div>
-            <div>Date: {props.foundEventsss?.eventDate.split('T')[0]}</div>
-            <div> Category: {props.foundEventsss?.categoryName}</div>
-          </div>
-        </div>
-
-        <div css={cmStyles}>
-          {props.user ? (
-            <>
-              <div>
-                <p>
-                  messages <Chat css={iconsStyles} />{' '}
-                </p>
-
-                {allComments?.map((comment) => {
-                  return (
-                    <div key={`commentsList-${comment.id}`}>
-                      <div css={replyStyles}>
-                        <div>
-                          <Person css={iconStyles} />
-                          {comment.username}
-                        </div>
-                        {comment.text}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </>
-          ) : (
-            <div css={msgStyles}>
-              <div> no comments </div>
-            </div>
-          )}
-        </div>
-      </div>
+    <>
+      <Head>
+        <title>Event</title>
+        <meta name="description" content="event in profile" />
+      </Head>
       <div
         css={css`
-          margin-top: 20px;
-          margin-right: 20px;
-          width: 40px;
-          height: 40px;
+          margin-top: 5px;
+          margin-left: 5px;
+          width: 35px;
+          height: 35px;
           cursor: pointer;
         `}
       >
@@ -205,7 +152,68 @@ export default function SingleEvent(props: Props) {
           <ArrowLeftCircle />
         </Link>
       </div>
-    </div>
+      <div css={containerStyles}>
+        <div css={itemsStyles}>
+          <div>
+            <Image
+              src={
+                props.foundEventsss
+                  ? props.foundEventsss.image
+                  : 'uploaded image'
+              }
+              width={400}
+              height={400}
+              alt="preview"
+            />
+          </div>
+
+          <div css={divStyles}>
+            <div>
+              <p>
+                details
+                <Search css={iconsStyles} />
+              </p>
+              <div>Host:{props.foundEventsss?.username}</div>
+              <div>Event Name: {props.foundEventsss?.eventName}</div>
+              <div>location: {props.foundEventsss?.address}</div>
+              <div>{props.foundEventsss?.free ? 'free' : ''}</div>
+              <div>Date: {props.foundEventsss?.eventDate.split('T')[0]}</div>
+              <div> Category: {props.foundEventsss?.categoryName}</div>
+            </div>
+          </div>
+
+          <div css={cmStyles}>
+            {props.user ? (
+              <>
+                <div>
+                  <div>
+                    messages <Chat css={iconsStyles} />{' '}
+                  </div>
+
+                  {allComments?.map((comment) => {
+                    return (
+                      <div key={`commentsList-${comment.id}`}>
+                        <div css={replyStyles}>
+                          <div>
+                            <Person css={iconStyles} />
+                            {comment.username}
+                          </div>
+                          {comment.text}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              <div css={msgStyles}>
+                <div> no comments </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 export async function getServerSideProps(context: GetServerSidePropsContext) {

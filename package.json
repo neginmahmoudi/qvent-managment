@@ -27,12 +27,16 @@
     "cookie": "^0.5.0",
     "dotenv-cli": "^6.0.0",
     "dotenv-safe": "^8.2.0",
+    "flowbite": "^1.5.4",
+    "flowbite-react": "^0.3.4",
+    "init": "^0.1.2",
     "js-cookie": "^3.0.1",
     "ley": "^0.8.1",
     "next": "12.3.1",
     "postgres": "^3.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-player": "^2.11.0",
     "sharp": "^0.31.1"
   },
   "devDependencies": {
@@ -46,6 +50,7 @@
     "@typescript-eslint/parser": "5.40.0",
     "@upleveled/eslint-config-upleveled": "^3.0.1",
     "@upleveled/eslint-plugin-upleveled": "2.1.6",
+    "autoprefixer": "^10.4.13",
     "eslint": "8.25.0",
     "eslint-config-next": "12.3.1",
     "eslint-config-react-app": "7.0.1",
@@ -61,6 +66,8 @@
     "eslint-plugin-sonarjs": "0.16.0",
     "eslint-plugin-testing-library": "5.7.2",
     "eslint-plugin-unicorn": "44.0.2",
+    "postcss": "^8.4.19",
+    "tailwindcss": "^3.2.4",
     "typescript": "4.8.4"
   },
   "resolutions": {

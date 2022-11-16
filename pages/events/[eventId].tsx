@@ -1,7 +1,7 @@
 import { Person } from '@emotion-icons/bootstrap';
 import { Send } from '@emotion-icons/fluentui-system-regular';
 import { css } from '@emotion/react';
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -122,7 +122,7 @@ type Props = {
 
 export default function SingleEvent(props: Props) {
   const [allComments, setAllComments] = useState<CommentDTO[]>([]);
-  const [newComment, setNewComment] = useState('');
+  const [newCommentText, setNewCommentText] = useState('');
 
   async function getCommentsFromApi() {
     if (props.databaseComments) {
@@ -138,25 +138,18 @@ export default function SingleEvent(props: Props) {
       body: JSON.stringify({
         userId: props.user?.id.toString(),
         eventId: props.foundEventsss?.id,
-        text: newComment,
+        text: newCommentText,
       }),
     });
 
     const commentFromApi = (await response.json()) as CommentDTO;
-    // const user = await getUsernameById(commentFromApi.userId);
-    // const newCompleteComment = {
-    //   ...commentFromApi,
-    //   username: user?.username,
-    // };
-    // const newCompleteComment = {
-    //   ...commentFromApi,
-    //   username: await getUsernameById(commentFromApi.userId),
-    // };
-    // const newState = [...allComments, newCompleteComment];
-    const newState = [...allComments, commentFromApi];
+    const newState = [
+      ...allComments,
+      { ...commentFromApi, username: props.user?.username },
+    ];
     setAllComments(newState);
     console.log(newState);
-    setNewComment('');
+    setNewCommentText('');
   }
 
   useEffect(() => {
@@ -178,89 +171,97 @@ export default function SingleEvent(props: Props) {
     );
   }
   return (
-    <div css={containerStyles}>
-      <div css={itemsStyles}>
-        <div>
-          <Image
-            src={
-              props.foundEventsss ? props.foundEventsss.image : 'uploaded image'
-            }
-            width={350}
-            height={350}
-            alt="preview"
-          />
-        </div>
-
-        <div css={divStyles}>
+    <>
+      <Head>
+        <title>Event</title>
+        <meta name="description" content="event for general user" />
+      </Head>
+      <div css={containerStyles}>
+        <div css={itemsStyles}>
           <div>
-            <div>Host:{props.foundEventsss?.username}</div>
-            <div>Event Name: {props.foundEventsss?.eventName}</div>
-            <div>location: {props.foundEventsss?.address}</div>
-            <div> {props.foundEventsss?.free ? 'free' : ''}</div>
-            <div>Date: {props.foundEventsss?.eventDate.split('T')[0]}</div>
-            <div> Category: {props.foundEventsss?.categoryName}</div>
+            <Image
+              src={
+                props.foundEventsss
+                  ? props.foundEventsss.image
+                  : 'uploaded image'
+              }
+              width={350}
+              height={350}
+              alt="preview"
+            />
+          </div>
+
+          <div css={divStyles}>
+            <div>
+              <div>Host:{props.foundEventsss?.username}</div>
+              <div>Event Name: {props.foundEventsss?.eventName}</div>
+              <div>location: {props.foundEventsss?.address}</div>
+              <div> {props.foundEventsss?.free ? 'free' : ''}</div>
+              <div>Date: {props.foundEventsss?.eventDate.split('T')[0]}</div>
+              <div> Category: {props.foundEventsss?.categoryName}</div>
+            </div>
           </div>
         </div>
-      </div>
-      <p>Ask your questions here !</p>
-      <div css={cmStyles}>
-        {props.user ? (
-          <>
-            <div
-              css={css`
-                display: flex;
-              `}
-            >
-              {' '}
-              <textarea
-                value={newComment}
-                placeholder=" You have questions ?
+        <p>Ask your questions here !</p>
+        <div css={cmStyles}>
+          {props.user ? (
+            <>
+              <div
+                css={css`
+                  display: flex;
+                `}
+              >
+                {' '}
+                <textarea
+                  value={newCommentText}
+                  placeholder=" You have questions ?
               ask me !"
-                rows={5}
-                cols={50}
-                onChange={(event) => {
-                  setNewComment(event.currentTarget.value);
-                }}
-              ></textarea>
-              <div>
-                <button
-                  css={btnStyles}
-                  onClick={async () => {
-                    await createCommentFromApi();
+                  rows={5}
+                  cols={50}
+                  onChange={(event) => {
+                    setNewCommentText(event.currentTarget.value);
                   }}
-                >
-                  <Send css={icon2Styles} />
-                </button>
+                ></textarea>
+                <div>
+                  <button
+                    css={btnStyles}
+                    onClick={async () => {
+                      await createCommentFromApi();
+                    }}
+                  >
+                    <Send css={icon2Styles} />
+                  </button>
+                </div>
               </div>
-            </div>
-            <div>
-              {allComments?.map((comment) => {
-                return (
-                  <div key={`commentsList-${comment.id}`}>
-                    <div css={replyStyles}>
-                      <div css={profileStyles}>
-                        <Person css={iconStyles} />
-                        {comment.username}:
+              <div>
+                {allComments?.map((comment) => {
+                  return (
+                    <div key={`commentsList-${comment.id}`}>
+                      <div css={replyStyles}>
+                        <div css={profileStyles}>
+                          <Person css={iconStyles} />
+                          {comment.username}:
+                        </div>
+                        <div> {comment.text}</div>
                       </div>
-                      <div> {comment.text}</div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+            </>
+          ) : (
+            <div css={msgStyles}>
+              <div> to leave a commnet please first log in </div>
+              <Link href="/login">Login</Link>
             </div>
-          </>
-        ) : (
-          <div css={msgStyles}>
-            <div> to leave a commnet please first log in </div>
-            <Link href="/login">Login</Link>
-          </div>
-        )}
+          )}
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
-      <br />
-      <br />
-      <br />
-      <br />
-    </div>
+    </>
   );
 }
 export async function getServerSideProps(context: GetServerSidePropsContext) {
