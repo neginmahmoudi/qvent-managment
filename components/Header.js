@@ -1,3 +1,4 @@
+import { LogOut, UserCircle } from '@emotion-icons/boxicons-regular';
 import { css } from '@emotion/react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -14,13 +15,13 @@ const containerStyles = css`
 `;
 const navContainerStyles = css`
   display: flex;
-  div {
+  /* div {
     color: #fff;
     margin-left: 15px;
     padding: 5px;
     background-color: #a32495;
     border-radius: 50%;
-  }
+  } */
 `;
 const navStyles = css`
   display: flex;
@@ -42,6 +43,17 @@ const navStyles = css`
     border-bottom: 1px solid #a32495;
     transition: width 1s;
   }
+`;
+const iContainerStyles = css`
+  margin-right: 40px;
+  margin-left: 20px;
+  padding: 4px;
+`;
+const iconStyles = css`
+  width: 20px;
+  height: 20px;
+  color: black;
+  margin-right: 5px;
 `;
 
 function Anchor({ children, ...restProps }) {
@@ -65,31 +77,19 @@ export default function Header(props) {
           <nav css={navStyles}>
             <Link href="/">Home</Link>
             <Link href="/events">Events</Link>
-            {props.user && <div>{props.user.username}</div>}
+            {props.user && (
+              <a href="/private-profile">
+                <UserCircle css={iconStyles} />
+                {props.user.username}
+              </a>
+            )}
             {props.user ? (
-              // <div>
-              //   <ul>
-              //     <li>
-              <Anchor href="/logout">Logout</Anchor>
+              <div css={iContainerStyles}>
+                <Anchor href="/logout">
+                  <LogOut css={iconStyles} />
+                </Anchor>
+              </div>
             ) : (
-              //     </li>
-              //     <hr />
-              //     <li>
-              //       <Link href="/private-profile">profile</Link>
-              //     </li>
-              //   </ul>
-              //  </div>
-              // <div>
-              //   <ul>
-              //     <li>
-              //       <Anchor href="/logout">Logout</Anchor>
-              //     </li>
-              //     <hr />
-              //     <li>
-              //       <Link href="/private-profile">profile</Link>
-              //     </li>
-              //   </ul>
-              // </div>
               <>
                 <Link href="/login">Login</Link>
                 <Link href="/register">Register</Link>

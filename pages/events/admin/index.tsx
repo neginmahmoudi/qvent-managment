@@ -283,6 +283,7 @@ export default function Admin(props: Props) {
       alert('event not found id: ' + id);
     }
   }
+
   function clearStatus() {
     setOnEditId(0);
     setAddressInput('');

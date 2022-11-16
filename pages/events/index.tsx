@@ -1,4 +1,3 @@
-import { Search } from '@emotion-icons/bootstrap';
 import { css } from '@emotion/react';
 import { GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
