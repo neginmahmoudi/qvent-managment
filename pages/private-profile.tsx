@@ -43,6 +43,7 @@ const buttonStyles = css`
   width: 300px;
   height: 100px;
   background-color: #c34a36;
+  cursor: pointer;
   :hover {
     box-shadow: 3px 3px #b0a8b9;
   }
