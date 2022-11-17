@@ -51,7 +51,7 @@ export default async function handler(
     const categoryId = request.body?.categoryId;
     const eventId = request.body?.eventId;
     const free = request.body?.free;
-
+    console.log('types:', typeof eventId, typeof categoryId);
     // Check all the information to create events
     if (
       !(

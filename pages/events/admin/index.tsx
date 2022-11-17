@@ -492,9 +492,7 @@ export default function Admin(props: Props) {
   );
 }
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext,
-): Promise<GetServerSidePropsResult<Props>> {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
   const user = token && (await getUserBySessionToken(token));
   const cloudinaryAPI = process.env.CLOUDINARY_NAME;
