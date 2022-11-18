@@ -213,6 +213,7 @@ export default function SingleEvent(props: Props) {
               >
                 {' '}
                 <textarea
+                  required={true}
                   value={newCommentText}
                   placeholder=" You have questions ?
               ask me !"

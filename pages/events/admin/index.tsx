@@ -206,7 +206,7 @@ export default function Admin(props: Props) {
           'content-type': 'application/json',
         },
         body: JSON.stringify({
-          userId: props.user.id.toString(),
+          userId: props.user.id,
           image: image,
           eventName: eventNameInput,
           description: descriptionInput,

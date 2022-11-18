@@ -31,16 +31,16 @@
     "postgres": "^3.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "sharp": "^0.31.1"
-  },
-  "devDependencies": {
-    "@babel/eslint-parser": "7.19.1",
-    "@next/eslint-plugin-next": "12.3.1",
+    "sharp": "^0.31.1",
     "@types/eslint": "8.4.6",
     "@types/node": "18.8.5",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
-    "@types/sharp": "^0.31.0",
+    "@types/sharp": "^0.31.0"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "7.19.1",
+    "@next/eslint-plugin-next": "12.3.1",
     "@typescript-eslint/eslint-plugin": "5.40.0",
     "@typescript-eslint/parser": "5.40.0",
     "@upleveled/eslint-config-upleveled": "^3.3.9",
