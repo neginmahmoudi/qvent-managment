@@ -85,12 +85,13 @@ export async function getEventByIdAndValidSessionToken(
   `;
   return event;
 }
-// just to try do not push
+
 export async function getFoundEventById(id: number) {
+  if (!id) return undefined;
   const [event] = await sql<EventDTO[]>`
   SELECT events.id, events.image, events.event_name, events.description, events.address, events.event_date, events.category_id, events.user_id, events.free, categories.category_name, users.username
   FROM events inner join categories on events.category_id=categories.id inner join users on events.user_id =users.id
-  WHERE events.id=${id};
+  WHERE events.id = ${id};
   `;
   return event;
 }

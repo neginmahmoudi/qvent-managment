@@ -148,7 +148,6 @@ export default function SingleEvent(props: Props) {
       { ...commentFromApi, username: props.user?.username },
     ];
     setAllComments(newState);
-    console.log(newState);
     setNewCommentText('');
   }
 

@@ -109,7 +109,6 @@ export default function SingleEvent(props: Props) {
 
   async function getCommentsFromApi() {
     if (props.databaseComments) {
-      console.log(props.databaseComments);
       setAllComments(props.databaseComments);
     }
   }
@@ -231,7 +230,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   }
 
   const foundEvent = await getFoundEventById(Number(eventId));
-
   if (typeof foundEvent === 'undefined') {
     return {
       props: {

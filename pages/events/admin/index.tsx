@@ -330,7 +330,7 @@ export default function Admin(props: Props) {
                 src={image}
                 width={200}
                 height={200}
-                alt="upload an image "
+                alt="Format:Jpeg / size:1mg"
               />
             </div>
           </div>
@@ -495,6 +495,7 @@ export default function Admin(props: Props) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const token = context.req.cookies.sessionToken;
   const user = token && (await getUserBySessionToken(token));
+
   const cloudinaryAPI = process.env.CLOUDINARY_NAME;
   if (!user) {
     return {
@@ -505,6 +506,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     };
   }
   const eventsByLogedInUser = user && (await getEventByLogedInUser(user.id));
+
   const categoriesList = await getCategories();
 
   return {
