@@ -154,7 +154,7 @@ export default function SingleEvent(props: Props) {
       <div css={containerStyles}>
         <div css={itemsStyles}>
           <div>
-            <Image
+            <img
               src={
                 props.foundEventsss
                   ? props.foundEventsss.image

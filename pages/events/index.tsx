@@ -163,7 +163,7 @@ export default function EventFromDataBase(props: Props) {
                   <h3>Event:{event.eventName}</h3>
                 </div>
 
-                <Image
+                <img
                   src={event.image}
                   width={240}
                   height={170}

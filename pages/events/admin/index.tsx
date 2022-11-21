@@ -3,7 +3,6 @@ import { Delete } from '@emotion-icons/fluentui-system-regular';
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Category, getCategories } from '../../../database/categories';
@@ -326,7 +325,7 @@ export default function Admin(props: Props) {
           <div>
             <input type="file" name="image" onChange={uploadImage} />
             <div css={imgStyles}>
-              <Image
+              <img
                 src={image}
                 width={200}
                 height={200}
