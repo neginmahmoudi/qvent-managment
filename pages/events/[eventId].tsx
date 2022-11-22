@@ -3,12 +3,11 @@ import { Send } from '@emotion-icons/fluentui-system-regular';
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { CommentDTO, getFoundCommentByEventId } from '../../database/comments';
 import { EventDTO, getFoundEventById } from '../../database/events';
-import { getUserBySessionToken, getUsernameById } from '../../database/users';
+import { getUserBySessionToken } from '../../database/users';
 import { parseIntFromContextQuery } from '../../utils/contextQuery';
 
 const containerStyles = css`
@@ -29,7 +28,8 @@ const itemsStyles = css`
 `;
 const divStyles = css`
   margin-left: 50px;
-  width: 350px;
+  margin-bottom: 90px;
+  width: 450px;
   height: 300px;
   border-radius: 10px;
   padding: 20px;
@@ -194,6 +194,7 @@ export default function SingleEvent(props: Props) {
             <div>
               <div>Host:{props.foundEventsss?.username}</div>
               <div>Event Name: {props.foundEventsss?.eventName}</div>
+              <div>Description: {props.foundEventsss?.description}</div>
               <div>location: {props.foundEventsss?.address}</div>
               <div> {props.foundEventsss?.free ? 'free' : ''}</div>
               <div>Date: {props.foundEventsss?.eventDate.split('T')[0]}</div>
@@ -233,7 +234,12 @@ export default function SingleEvent(props: Props) {
                   </button>
                 </div>
               </div>
-              <div>
+              <div
+                css={css`
+                  height: 200px;
+                  overflow: auto;
+                `}
+              >
                 {allComments?.map((comment) => {
                   return (
                     <div key={`commentsList-${comment.id}`}>

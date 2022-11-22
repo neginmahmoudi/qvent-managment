@@ -23,7 +23,7 @@ const containerStyles = css`
   border-radius: 50px;
   flex-direction: column;
   align-items: center;
-
+  font-family: cursive;
   textarea {
     border: none;
     border-radius: 5px;
@@ -33,6 +33,7 @@ const containerStyles = css`
   }
   input {
     border: none;
+    font-family: monospace;
     border-radius: 5px;
     padding: 8px;
     background-color: white;
@@ -64,9 +65,8 @@ const eventStyles = css`
   justify-content: space-between;
   align-items: center;
   font-family: cursive;
-  margin: 0 auto;
   margin-bottom: 30px;
-  width: 600px;
+  width: 500px;
   background-color: #3ab8a9;
   height: 70px;
   border-radius: 25px;
@@ -96,27 +96,25 @@ const eventStyles = css`
   }
 `;
 const mapStyles = css`
-  margin-top: 100px;
   margin-right: 100px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  font-family: cursive;
   input {
-    width: 300px;
-    padding: 5px;
+    width: 480px;
+    padding: 12px;
     border-radius: 5px;
     margin-bottom: 40px;
   }
 `;
 const imgStyles = css`
-  background-color: white;
   margin-top: 5px;
   margin-left: 9px;
   border-radius: 4px;
   margin-bottom: 20px;
-  border: 1px solid whitesmoke;
   font-family: cursive;
-  font-size: smaller;
-  color: #a2a2a2;
+  font-size: 10px;
 `;
 const btn2Styles = css`
   padding: 10px;
@@ -323,13 +321,26 @@ export default function Admin(props: Props) {
         <div css={containerStyles}>
           <h1>Events Form</h1>
           <div>
-            <input type="file" name="image" onChange={uploadImage} />
+            <input
+              type="file"
+              name="image"
+              onChange={uploadImage}
+              css={css`
+                ::-webkit-file-upload-button {
+                  background: #818080;
+                  color: white;
+                  border: none;
+                  border-radius: 5px;
+                  padding: 5px;
+                }
+              `}
+            />
             <div css={imgStyles}>
               <img
                 src={image}
                 width={200}
                 height={200}
-                alt="Format:Jpeg / size:1mg"
+                alt=" format:Jpg / size:1mg"
               />
             </div>
           </div>
@@ -434,9 +445,11 @@ export default function Admin(props: Props) {
 
           <hr />
         </div>
+
         <div css={mapStyles}>
+          <h2>Your created events</h2>
           <input
-            placeholder="search"
+            placeholder="search your events"
             onChange={(e) => {
               if (filteredEvents.length <= 0) {
                 setFilteredEvents(events);

@@ -1,13 +1,13 @@
 import {
   ArrowLeftCircle,
-  Chat,
+  Info,
+  InfoCircle,
   Person,
-  Search,
 } from '@emotion-icons/bootstrap';
+import { MessageDetail } from '@emotion-icons/boxicons-regular';
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import {
@@ -38,12 +38,12 @@ const divStyles = css`
   background-color: #f3eada;
   width: 350px;
   height: 400px;
+  border: 1px solid;
   border-radius: 10px;
   padding: 20px;
   line-height: 40px;
   display: flex;
   flex-direction: column;
-  gap: 140px;
   align-items: flex-start;
   font-family: monospace;
   font-size: 16px;
@@ -52,6 +52,8 @@ const divStyles = css`
 const cmStyles = css`
   display: flex;
   margin-left: 30px;
+  height: 400px;
+  overflow: auto;
   gap: 20px;
 `;
 const replyStyles = css`
@@ -78,10 +80,9 @@ const iconStyles = css`
   color: grey;
 `;
 const iconsStyles = css`
-  height: 30px;
-  width: 30px;
-  margin-bottom: 5px;
-  margin-left: 5px;
+  height: 28px;
+  width: 28px;
+  padding: 5px;
 `;
 const msgStyles = css`
   display: flex;
@@ -169,11 +170,12 @@ export default function SingleEvent(props: Props) {
           <div css={divStyles}>
             <div>
               <p>
-                details
-                <Search css={iconsStyles} />
+                <InfoCircle css={iconsStyles} />
+                details :
               </p>
               <div>Host:{props.foundEventsss?.username}</div>
               <div>Event Name: {props.foundEventsss?.eventName}</div>
+              <div>event info: {props.foundEventsss?.description}</div>
               <div>location: {props.foundEventsss?.address}</div>
               <div>{props.foundEventsss?.free ? 'free' : ''}</div>
               <div>Date: {props.foundEventsss?.eventDate.split('T')[0]}</div>
@@ -186,7 +188,7 @@ export default function SingleEvent(props: Props) {
               <>
                 <div>
                   <div>
-                    messages <Chat css={iconsStyles} />{' '}
+                    <MessageDetail css={iconsStyles} /> messages
                   </div>
 
                   {allComments?.map((comment) => {

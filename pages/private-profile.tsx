@@ -1,5 +1,4 @@
-import { FilePerson, ListTask } from '@emotion-icons/bootstrap';
-// import { HomePerson } from '@emotion-icons/fluentui-system-regular';
+import { FilePerson, ListTask, Question } from '@emotion-icons/bootstrap';
 import { css } from '@emotion/react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
@@ -14,13 +13,13 @@ const pageStyles = css`
   display: flex;
   height: 100%;
   font-family: cursive;
-  background-color: #fefcee;
+  /* background-color: #fefcee; */
 `;
 const menuStyles = css`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   width: 180px;
   height: 600px;
   background-color: #37303e;
@@ -29,19 +28,22 @@ const menuStyles = css`
     text-decoration: none;
     color: white;
     line-height: 50px;
-    margin-left: 30px;
+    margin-left: 10px;
   }
 `;
 const containerStyles = css`
   padding: 100px;
-  width: 600px;
+  position: relative;
+  width: 100%;
   margin: 0 auto;
 `;
 const buttonStyles = css`
   border: none;
+  font-size: 22px;
+  color: white;
   border-radius: 10px;
-  width: 300px;
-  height: 100px;
+  width: 200px;
+  height: 90px;
   background-color: #c34a36;
   cursor: pointer;
   :hover {
@@ -65,6 +67,9 @@ const iconStyles = css`
 `;
 const linkStyles = css`
   margin-top: 40px;
+  div {
+    margin-top: 3px;
+  }
 `;
 export default function UserProfile(props: Props) {
   if (!props.user) {
@@ -91,37 +96,68 @@ export default function UserProfile(props: Props) {
           <div
             css={css`
               margin-top: 20px;
+              background-color: azure;
+              border-radius: 40%;
             `}
           >
             {' '}
             <Image
-              src="/avatar.jpg"
+              src={`https://avatars.dicebear.com/api/pixel-art/${props.user.username}.svg`}
               alt="avatar profile picture"
-              width="150px"
-              height="150px"
+              width="120px"
+              height="120px"
               css={imgStyles}
             />
           </div>
 
           <div css={linkStyles}>
             <div>
-              {' '}
               <FilePerson css={iconStyles} />
               <Link href="/private-profile">pv profile</Link>
             </div>
             <div>
-              {' '}
               <ListTask css={iconStyles} />
               <Link href="/events/admin">Events info</Link>
+            </div>
+            <div>
+              <Question
+                css={css`
+                  width: 18px;
+                  height: 20px;
+                  color: white;
+                  border: 1px solid white;
+                  margin-right: -2px;
+                  border-radius: 50%;
+                `}
+              />
+              <Link href="/"> Questions</Link>
             </div>
           </div>
         </div>
         <div css={containerStyles}>
           <h1>welcome to your account, {props.user.username}!</h1>
           <p>to create events click here !</p>
-          <button css={buttonStyles}>
-            <Link href="/events/admin"> + Create Event</Link>
-          </button>
+          <Link href="/events/admin">
+            <button css={buttonStyles}>+ Create Event</button>
+          </Link>
+
+          <div
+            css={css`
+              position: absolute;
+              right: 15%;
+              bottom: 25%;
+              opacity: 0.9;
+            `}
+          >
+            <Image
+              src="/rainbowi.jpg"
+              width={400}
+              height={400}
+              css={css`
+                border-radius: 50%;
+              `}
+            />
+          </div>
         </div>
       </div>
     </>

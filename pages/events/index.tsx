@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 import { GetServerSidePropsResult } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import { useState } from 'react';
 import { Category, getCategories } from '../../database/categories';
 import { EventDTO, getEventsWithJoint } from '../../database/events';
@@ -21,11 +20,10 @@ const wrapstyles = css`
 `;
 const containerStyles = css`
   border-radius: 10px;
-
   padding: 30px;
   display: flex;
   align-items: flex-start;
-  background-color: #202628;
+  background-color: #3b3e3e;
   flex-direction: column;
   width: 300px;
   margin: 2rem;
@@ -77,8 +75,7 @@ const iconStyles = css`
 const filterStyles = css`
   width: 150px;
   padding: 5px;
-  background-color: #c34a36;
-  color: #ebebeb;
+  background-color: salmon;
   position: relative;
   font-family: cursive;
   border-radius: 15px;
@@ -129,17 +126,6 @@ export default function EventFromDataBase(props: Props) {
           );
         })}
       </select>
-      <video
-        width="50px"
-        height="50px"
-        css={css`
-          position: absolute;
-          right: 2%;
-          top: 15%;
-        `}
-      >
-        <source src="/flag.mp4" />
-      </video>
       <div css={hStyles}>
         {' '}
         <h1>All Events</h1>

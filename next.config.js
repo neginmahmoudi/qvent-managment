@@ -6,6 +6,7 @@ const nextConfig = {
     emotion: true,
   },
   images: {
+    domains: ['avatars.dicebear.com'],
     remotePatterns: [
       {
         protocol: 'https',

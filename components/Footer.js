@@ -21,8 +21,6 @@ const itemSocialStyles = css`
   gap: 10px;
   width: 130px;
   height: 60px;
-
-  opacity: 0.75;
   :hover {
     opacity: 0.9;
   }
@@ -37,13 +35,25 @@ export default function Footer() {
     <footer css={footerStyles}>
       <div css={itemSocialStyles}>
         <Link href="/">
-          <InstagramWithCircle />
+          <InstagramWithCircle
+            css={css`
+              color: purple;
+            `}
+          />
         </Link>
         <Link href="/">
-          <TwitterWithCircle />
+          <TwitterWithCircle
+            css={css`
+              color: #387cff;
+            `}
+          />
         </Link>
         <Link href="/">
-          <FacebookWithCircle />
+          <FacebookWithCircle
+            css={css`
+              color: darkblue;
+            `}
+          />
         </Link>
       </div>
 
