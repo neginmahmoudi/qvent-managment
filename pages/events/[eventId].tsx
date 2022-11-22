@@ -100,12 +100,19 @@ const icon2Styles = css`
 `;
 const msgStyles = css`
   display: flex;
-  color: #a32495;
+  color: #e54c4c;
   flex-direction: column;
+  gap: 5px;
   align-items: center;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: larger;
   padding: 10px;
+  div {
+    margin-left: 80px;
+  }
+  a {
+    margin-left: 80px;
+  }
 `;
 
 type UserHere = {

@@ -1,34 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Qvent
 
-## Getting Started
+## Description
 
-First, run the development server:
+qvent is a full stack web application which help people/ organizations to host and follow events in a more organized yet simpler way.
+To create events you need to register with the site. You can also leave comments
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Functionalities
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Landing page
+- Events page where all the events are listed with the ability of filtering them by category
+- Full user authentication process (registration and login)
+- User authorisation incl. creation of session tokens
+- Dynamic routing for each event details page with the ability of leaving comments
+- Private profile page where registered people can edit or delete their events information
+- The header adapts based on screen size and status of the user (logged in / not logged in)
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Technologies
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- Next.js
+- React
+- Postgres
+- Emotion
+- Node.js
+- Figma
+- DrawSQL
+- Jest unit tests
+- Playwright E2E tests
+- Typescript
+- REST API
+- Cloudinary
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Setup instructions
 
-## Learn More
+- Clone the repository with `git clone <repo>`
+- Setup the database by downloading and installing PostgreSQL
+- Create a user and a database
+- Create a new file .env
+- Create an API key on the Google Maps Platform and store it in your .env with a variable name starting with NEXT*PUBLIC*
+- Copy the environment variables from .env-example into .env
+- Replace the placeholders ######### with your username, password and name of database
+- Install dotenv-cli with `yarn add dotenv-cli`
+- Run `yarn install` in your command line
+- Run the migrations with `yarn migrate up`
+- Start the server by running `yarn dev`
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy on fly.io
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Generate a Fly.io Token, called _GitHub Actions Deploy Token_ and copy the text
+- Create a new repository secret in the GitHub repo, named FLY_API_TOKEN
+- Log into Fly.io on the command line: `flyctl auth login`
+- Create an app `flyctl apps create --name <app name>`
+- Create the Fly.io config files
+- Add database credentials using Fly.io secrets
+  `flyctl secrets set PGHOST=localhost PGDATABASE=$(openssl rand -hex 16) PGUSERNAME=upleveled$(openssl rand -hex 16) PGPASSWORD=$(openssl rand -base64 32)`
+- Add built time environment variables to the config files (fly.toml, Dockerfile) as described [here](https://fly.io/docs/languages-and-frameworks/nextjs/#what-about-build-time-environment-variables)
+- Create a 1GB volume for the PostgreSQL database in Frankfurt
+  `flyctl volumes create postgres --size 1 --region fra`
+- Deploy: `flyctl deploy`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Images
 
-## Deploy on Vercel
+** this a student project and it has no commercial benefits**
+credits : Image by (alicia_mb), rawpixel.com, Pinterest( Ceci Morales)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Screenshots
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![Landingpage](Landingpage.jpeg)
+![register](register.jpeg)
+![login](Login.jpeg)
+![private profile](privateprofile.jpeg)
+![form](Adminform.jpeg.jpeg)
+![events](events.jpeg)
+![drawsql](drawSql.jpeg)
