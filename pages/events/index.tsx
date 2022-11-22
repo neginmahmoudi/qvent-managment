@@ -34,7 +34,7 @@ const containerStyles = css`
   }
   :hover {
     cursor: pointer;
-    box-shadow: 4px -4px #4c5355;
+    box-shadow: 4px -4px #76797a;
   }
   h3 {
     text-align: center;

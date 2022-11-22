@@ -43,6 +43,7 @@ const divStyles = css`
   padding: 20px;
   line-height: 40px;
   display: flex;
+  overflow: auto;
   flex-direction: column;
   align-items: flex-start;
   font-family: monospace;

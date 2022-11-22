@@ -31,6 +31,7 @@ const divStyles = css`
   margin-bottom: 90px;
   width: 450px;
   height: 300px;
+  overflow: auto;
   border-radius: 10px;
   padding: 20px;
   line-height: 40px;
