@@ -146,7 +146,7 @@ export default function EventFromDataBase(props: Props) {
                     margin-bottom: 3px;
                   `}
                 >
-                  <h3>Event:{event.eventName}</h3>
+                  <h3>{event.eventName}</h3>
                 </div>
 
                 <img

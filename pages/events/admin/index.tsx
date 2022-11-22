@@ -469,7 +469,7 @@ export default function Admin(props: Props) {
           {events?.map((event) => {
             return (
               <div css={eventStyles} key={`eventId-${event.id}`}>
-                <div>Event Name: {event.eventName} </div>
+                <div>Event: {event.eventName} </div>
                 <div>
                   <Link href={`/events/admin/${event.id}`}> more</Link>
                   <button
