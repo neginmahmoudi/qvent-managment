@@ -66,7 +66,7 @@ const cmStyles = css`
 `;
 const replyStyles = css`
   width: 408px;
-  height: 70px;
+  height: 80px;
   font-size: 15px;
   margin-top: 7px;
   padding: 10px;
@@ -77,7 +77,7 @@ const replyStyles = css`
 const profileStyles = css`
   background-color: #f3eada;
   border-radius: 30px;
-  width: 70px;
+  width: 100px;
   margin-bottom: 5px;
   padding: 3px;
 `;
